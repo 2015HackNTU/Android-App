@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 
-
 public class MainActivity extends ActionBarActivity {
 
     /**
