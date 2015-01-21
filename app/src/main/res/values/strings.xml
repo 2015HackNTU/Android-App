@@ -2,10 +2,12 @@
 <resources>
 
     <string name="app_name">TreeHacks</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
+    <string name="title_section1">Schedule</string>
+    <string name="title_section2">Announcements</string>
     <string name="title_section3">Section 3</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="parse_app_id">AfM79brCkxAAkvQQ08dxphlbogFcfzjH4hobqTVi</string>
+    <string name="parse_client_key">pQwos49fJjtPI9PDJwlTva94K0jcFwpYDPbAGgvv</string>
 
 </resources>
