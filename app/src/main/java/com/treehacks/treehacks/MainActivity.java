@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,6 +47,7 @@ public class MainActivity extends ActionBarActivity {
 	    Parse.enableLocalDatastore(this);
 
 	    Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
+	    Log.d("Parse", "initialized");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -54,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-	    mViewPager.setCurrentItem(2); // Show middle screen (schedule)
+	    mViewPager.setCurrentItem(0); // Show middle screen (schedule)
 
     }
 
