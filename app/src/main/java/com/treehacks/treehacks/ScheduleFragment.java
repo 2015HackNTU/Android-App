@@ -47,27 +47,24 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			@Override
 			public void done(final List<ParseObject> parseCloudEvents, ParseException e) {
 				if (e == null) {
-//					Toast.makeText(getActivity(), "Schedule items found!", Toast.LENGTH_SHORT).show();
-//					for (ParseObject object : parseObjects) {
-//						Toast.makeText(getActivity(), object.getString("eventName"), Toast.LENGTH_SHORT).show();
-//					}
+                    // Update local datastore
 					ParseObject.unpinAllInBackground("events", new DeleteCallback() {
 						@Override
 						public void done(ParseException e) {
 							ParseObject.pinAllInBackground("events", parseCloudEvents, new SaveCallback() {
 								@Override
 								public void done(ParseException e) {
-									Log.d("Parse", "cache from cloud SUCCESS");
+									Log.d("Parse", "cache events from cloud SUCCESS");
 									if (weekView != null) {
 										weekView.notifyDatasetChanged();
 									}
-									// TODO: redraw calendar?
 								}
 							});
 						}
 					});
 
 				} else {
+                    e.printStackTrace();
 					// We done fucked up
 				}
 			}

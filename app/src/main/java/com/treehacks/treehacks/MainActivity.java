@@ -11,17 +11,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParsePush;
+import com.parse.ParsePushBroadcastReceiver;
 import com.parse.SaveCallback;
 
 public class MainActivity extends ActionBarActivity {
@@ -104,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
 		        case 0:
 			        return new ScheduleFragment();
 		        case 1:
-					return new AnnouceFragment();
+					return new AnnounceFragment();
 		        default:
 			        return null; // If we get here, we fucked up
 	        }
