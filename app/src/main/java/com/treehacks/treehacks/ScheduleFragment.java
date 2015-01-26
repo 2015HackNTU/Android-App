@@ -5,7 +5,11 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -31,10 +35,12 @@ import java.util.List;
  */
 public class ScheduleFragment extends Fragment implements WeekView.EventClickListener, WeekView.MonthChangeListener, WeekView.EventLongPressListener {
 	WeekView weekView;
+    Calendar treeHacksStart;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 		// Sync scheduled events from cloud
 		ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Schedule");
 		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -80,11 +86,47 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		weekView.setMonthChangeListener(this);
 		weekView.setEventLongPressListener(this);
 
-		Calendar treeHacksStart = Calendar.getInstance();
+        weekView.setNumberOfVisibleDays(1);
+        weekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+        weekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+        weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+
+        treeHacksStart = Calendar.getInstance();
 		treeHacksStart.set(2015, 1, 20); // months are 0-indexed while days & years are not
-		weekView.goToDate(treeHacksStart);
+        if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
+            weekView.goToDate(treeHacksStart);
+            weekView.goToHour(12);
+        }
 		return rootView;
 	}
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_schedule, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.isChecked())
+            return true;
+        else
+            item.setChecked(true);
+        switch (item.getItemId()) {
+            case R.id.action_day_view:
+                Calendar firstDay = weekView.getFirstVisibleDay();
+                weekView.setNumberOfVisibleDays(1);
+                weekView.goToDate(firstDay);
+                return true;
+            case R.id.action_three_day_view:
+                firstDay = weekView.getFirstVisibleDay();
+                weekView.setNumberOfVisibleDays(3);
+                weekView.goToDate(firstDay);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 	@Override
 	public void onEventClick(WeekViewEvent weekViewEvent, RectF rectF) {
