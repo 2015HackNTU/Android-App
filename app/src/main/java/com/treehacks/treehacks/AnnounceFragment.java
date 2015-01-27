@@ -33,6 +33,7 @@ public class AnnounceFragment extends Fragment {
 
         // Sync announcements from cloud
         ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Push");
+	    cloudQuery.orderByAscending("updatedAt");
         cloudQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseCloudAnnouncements, ParseException e) {
@@ -76,13 +77,14 @@ public class AnnounceFragment extends Fragment {
         announceView.setHasFixedSize(true);
         announceView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Get scheduled events from cache
+        // Get announcements from cache
         ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Push");
         localQuery.fromLocalDatastore();
+		localQuery.orderByAscending("updatedAt");
         List<ParseObject> pushes;
         try {
             pushes = localQuery.find();
-            Log.d("Parse", "read from local db SUCCESS");
+            Log.d("Parse", "read announcements from local db SUCCESS");
         } catch (ParseException e) {
             e.printStackTrace();
             pushes = new ArrayList<>();

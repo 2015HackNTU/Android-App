@@ -145,7 +145,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		List<ParseObject> parseEvents;
 		try {
 			parseEvents = localQuery.find();
-			Log.d("Parse", "read from local db SUCCESS");
+			Log.d("Parse", "read events from local db SUCCESS");
 		} catch (ParseException e) {
 			e.printStackTrace();
 			parseEvents = new ArrayList<>();
