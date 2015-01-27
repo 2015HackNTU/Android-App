@@ -93,5 +93,4 @@ public class AnnounceFragment extends Fragment {
         return rootView;
 	}
 
-
 }
