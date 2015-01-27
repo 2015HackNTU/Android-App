@@ -436,7 +436,7 @@ public class WeekView extends View {
 
             // Get more events if necessary. We want to store the events 3 months beforehand. Get
             // events only when it is the first iteration of the loop.
-            if (mEventRects == null || mRefreshEvents || (dayNumber == leftDaysWithGaps + 1 && mFetchedMonths[1] != day.get(Calendar.MONTH)+1 && day.get(Calendar.DAY_OF_MONTH) == 15)) {
+            if (mEventRects == null || mRefreshEvents || (dayNumber == leftDaysWithGaps + 1 && mFetchedMonths[1] != day.get(Calendar.MONTH) && day.get(Calendar.DAY_OF_MONTH) == 15)) {
                 getMoreEvents(day);
                 mRefreshEvents = false;
             }
@@ -659,23 +659,23 @@ public class WeekView extends View {
 
         // Get more events if the month is changed.
         if (mEventRects == null)
-            mEventRects = new ArrayList<EventRect>();
+            mEventRects = new ArrayList<>();
         if (mMonthChangeListener == null && !isInEditMode())
             throw new IllegalStateException("You must provide a MonthChangeListener");
 
         // If a refresh was requested then reset some variables.
         if (mRefreshEvents) {
             mEventRects.clear();
-            mFetchedMonths = new int[3];
+            mFetchedMonths = new int[]{-1, -1, -1};
         }
 
         // Get events of previous month.
-        int previousMonth = (day.get(Calendar.MONTH) == 0?12:day.get(Calendar.MONTH));
-        int nextMonth = (day.get(Calendar.MONTH)+2 == 13 ?1:day.get(Calendar.MONTH)+2);
+        int previousMonth = (day.get(Calendar.MONTH) - 1) % 12;
+        int nextMonth = (day.get(Calendar.MONTH) + 1) % 12;
         int[] lastFetchedMonth = mFetchedMonths.clone();
-        if (mFetchedMonths[0] < 1 || mFetchedMonths[0] != previousMonth || mRefreshEvents) {
+        if (mFetchedMonths[0] != previousMonth || mRefreshEvents) {
             if (!containsValue(lastFetchedMonth, previousMonth) && !isInEditMode()){
-                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange((previousMonth==12)?day.get(Calendar.YEAR)-1:day.get(Calendar.YEAR), previousMonth);
+                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange((previousMonth==Calendar.DECEMBER)?day.get(Calendar.YEAR)-1:day.get(Calendar.YEAR), previousMonth);
                 sortEvents(events);
                 for (WeekViewEvent event: events) {
                     cacheEvent(event);
@@ -685,9 +685,9 @@ public class WeekView extends View {
         }
 
         // Get events of this month.
-        if (mFetchedMonths[1] < 1 || mFetchedMonths[1] != day.get(Calendar.MONTH)+1 || mRefreshEvents) {
+        if (mFetchedMonths[1] != day.get(Calendar.MONTH) || mRefreshEvents) {
             if (!containsValue(lastFetchedMonth, day.get(Calendar.MONTH)+1) && !isInEditMode()) {
-                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1);
+                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(day.get(Calendar.YEAR), day.get(Calendar.MONTH));
                 sortEvents(events);
                 for (WeekViewEvent event : events) {
                     cacheEvent(event);
@@ -697,9 +697,9 @@ public class WeekView extends View {
         }
 
         // Get events of next month.
-        if (mFetchedMonths[2] < 1 || mFetchedMonths[2] != nextMonth || mRefreshEvents) {
+        if (mFetchedMonths[2] != nextMonth || mRefreshEvents) {
             if (!containsValue(lastFetchedMonth, nextMonth) && !isInEditMode()) {
-                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == 1 ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
+                List<WeekViewEvent> events = mMonthChangeListener.onMonthChange(nextMonth == Calendar.JANUARY ? day.get(Calendar.YEAR) + 1 : day.get(Calendar.YEAR), nextMonth);
                 sortEvents(events);
                 for (WeekViewEvent event : events) {
                     cacheEvent(event);

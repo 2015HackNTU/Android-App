@@ -28,6 +28,7 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -49,7 +50,38 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			@Override
 			public void done(final List<ParseObject> parseCloudEvents, ParseException e) {
 				if (e == null) {
-                    // Update local datastore
+					// Skip if no new updates are found
+					// Get newest updatedAt from cloud events
+					Date newestChange = new Date(1);
+					for (ParseObject o : parseCloudEvents) {
+						Date change = o.getUpdatedAt();
+						if (change.after(newestChange))
+							newestChange = change;
+					}
+					// Get stored updatedAt
+					Date storedChange = new Date(0);
+					ParseQuery<ParseObject> getStoredChangeTime = ParseQuery.getQuery("EventChangeTime");
+					getStoredChangeTime.fromLocalDatastore();
+					ParseObject storedChangeTime;
+					try {
+						storedChangeTime = getStoredChangeTime.getFirst();
+						if (storedChangeTime.has("time"))
+							storedChange = storedChangeTime.getDate("time");
+					} catch (ParseException e1) {
+						storedChangeTime = new ParseObject("EventChangeTime");
+						try {
+							storedChangeTime.pin();
+						} catch (ParseException e2) {
+						}
+					}
+					if (!newestChange.after(storedChange)) {
+						Log.d("Parse", "No newer updates found in cloud");
+						return;
+					}
+					Log.d("Parse", "Newer cloud updates found, syncing...");
+					// Store newer updatedAt
+					storedChangeTime.put("time", newestChange);
+					// Update local datastore
 					ParseObject.unpinAllInBackground("events", new DeleteCallback() {
 						@Override
 						public void done(ParseException e) {
@@ -142,6 +174,10 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		// Get scheduled events from cache
 		ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Schedule");
 		localQuery.fromLocalDatastore();
+		Calendar thisMonth = new GregorianCalendar(newYear, newMonth, 0);
+		Calendar nextMonth = new GregorianCalendar(newYear + (newMonth == Calendar.DECEMBER ? 1 : 0), (newMonth + 1) % 12, 0);
+		localQuery.whereGreaterThanOrEqualTo("eventTime", thisMonth.getTime());
+		localQuery.whereLessThan("eventTime", nextMonth.getTime());
 		List<ParseObject> parseEvents;
 		try {
 			parseEvents = localQuery.find();
