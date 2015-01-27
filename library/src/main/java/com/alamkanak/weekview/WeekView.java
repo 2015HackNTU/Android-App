@@ -123,8 +123,9 @@ public class WeekView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             if (mCurrentScrollDirection == Direction.NONE) {
                 if (Math.abs(distanceX) > Math.abs(distanceY)){
-                    mCurrentScrollDirection = Direction.HORIZONTAL;
-                    mCurrentFlingDirection = Direction.HORIZONTAL;
+//                    mCurrentScrollDirection = Direction.HORIZONTAL;
+//                    mCurrentFlingDirection = Direction.HORIZONTAL;
+	                return false;
                 }
                 else {
                     mCurrentFlingDirection = Direction.VERTICAL;
