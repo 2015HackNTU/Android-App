@@ -1349,6 +1349,10 @@ public class WeekView extends View {
      */
     public void goToToday() {
         Calendar today = Calendar.getInstance();
+	    today.set(Calendar.HOUR_OF_DAY, 0);
+	    today.set(Calendar.MINUTE, 0);
+	    today.set(Calendar.SECOND, 0);
+	    today.set(Calendar.MILLISECOND, 0);
         goToDate(today);
     }
 
@@ -1358,6 +1362,11 @@ public class WeekView extends View {
      */
     public void goToDate(Calendar date) {
         mScroller.forceFinished(true);
+
+	    int secondsInDay = (int) (((date.getTimeInMillis() + date.getTimeZone().getRawOffset()) / 1000) % 86400);
+	    int verticalOffset = mHourHeight * (secondsInDay / (60 * 60));
+	    mCurrentOrigin.y = -verticalOffset;
+
         date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
@@ -1374,10 +1383,6 @@ public class WeekView extends View {
         int dateDifference = (int) ((date.getTimeInMillis() - today.getTimeInMillis()) / (1000 * 60 * 60 * 24));
         mCurrentOrigin.x = - dateDifference * (mWidthPerDay + mColumnGap);
         mNumOfDaysToScroll = -dateDifference;
-
-	    int secondsInDay = (int) ((date.getTimeInMillis() / 1000) % (86400));
-	    int verticalOffset = mHourHeight * (secondsInDay / (60 * 60));
-	    mCurrentOrigin.y = -verticalOffset;
 
         invalidate();
     }

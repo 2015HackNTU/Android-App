@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Eddie on 1/20/2015.
@@ -89,7 +91,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
 
         treeHacksStart = Calendar.getInstance();
-		treeHacksStart.set(2015, 1, 20, 12, 0); // months are 0-indexed while days & years are not
+		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 12, 0);
         if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
             weekView.goToDate(treeHacksStart);
         }
@@ -101,6 +103,10 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         // TODO Add your menu entries here
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_schedule, menu);
+	    if (weekView.getNumberOfVisibleDays() == 1)
+			menu.findItem(R.id.action_day_view).setChecked(true);
+		else
+	        menu.findItem(R.id.action_three_day_view).setChecked(true);
     }
 
     @Override

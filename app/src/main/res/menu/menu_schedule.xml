@@ -5,12 +5,10 @@
         <item android:id="@+id/action_day_view"
             android:title="@string/action_day_view"
             android:orderInCategory="100"
-            app:showAsAction="never"
-            android:checked="true"/>
+            app:showAsAction="never"/>
         <item android:id="@+id/action_three_day_view"
             android:title="@string/action_three_day_view"
             android:orderInCategory="100"
-            app:showAsAction="never"
-            android:checked="false"/>
+            app:showAsAction="never"/>
     </group>
 </menu>
