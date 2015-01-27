@@ -75,10 +75,10 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 						}
 					}
 					if (!newestChange.after(storedChange)) {
-						Log.d("Parse", "No newer updates found in cloud");
+						Log.d("Parse", "No newer events found in cloud");
 						return;
 					}
-					Log.d("Parse", "Newer cloud updates found, syncing...");
+					Log.d("Parse", "Newer events found in cloud, syncing...");
 					// Store newer updatedAt
 					storedChangeTime.put("time", newestChange);
 					// Update local datastore

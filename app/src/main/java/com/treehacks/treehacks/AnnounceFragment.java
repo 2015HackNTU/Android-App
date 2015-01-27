@@ -40,6 +40,37 @@ public class AnnounceFragment extends Fragment {
             @Override
             public void done(final List<ParseObject> parseCloudAnnouncements, ParseException e) {
                 if (e == null) {
+	                // Skip if no new updates are found
+	                // Get newest updatedAt from cloud events
+	                Date newestChange = new Date(1);
+	                for (ParseObject o : parseCloudAnnouncements) {
+		                Date change = o.getUpdatedAt();
+		                if (change.after(newestChange))
+			                newestChange = change;
+	                }
+	                // Get stored updatedAt
+	                Date storedChange = new Date(0);
+	                ParseQuery<ParseObject> getStoredChangeTime = ParseQuery.getQuery("AnnounceChangeTime");
+	                getStoredChangeTime.fromLocalDatastore();
+	                ParseObject storedChangeTime;
+	                try {
+		                storedChangeTime = getStoredChangeTime.getFirst();
+		                if (storedChangeTime.has("time"))
+			                storedChange = storedChangeTime.getDate("time");
+	                } catch (ParseException e1) {
+		                storedChangeTime = new ParseObject("AnnounceChangeTime");
+		                try {
+			                storedChangeTime.pin();
+		                } catch (ParseException e2) {
+		                }
+	                }
+	                if (!newestChange.after(storedChange)) {
+		                Log.d("Parse", "No newer announcements found in cloud");
+		                return;
+	                }
+	                Log.d("Parse", "Newer announcements found in cloud, syncing...");
+	                // Store newer updatedAt
+	                storedChangeTime.put("time", newestChange);
                     // Update local datastore
                     ParseObject.unpinAllInBackground("announcements", new DeleteCallback() {
                         @Override
