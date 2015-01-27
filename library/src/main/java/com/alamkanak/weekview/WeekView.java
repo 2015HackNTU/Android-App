@@ -373,11 +373,15 @@ public class WeekView extends View {
         }
     }
 
+	private void recalculateWidthPerDay() {
+		// Calculate the available width for each day.
+		mHeaderColumnWidth = mTimeTextWidth + mHeaderColumnPadding *2;
+		mWidthPerDay = getWidth() - mHeaderColumnWidth - mColumnGap * (mNumberOfVisibleDays - 1);
+		mWidthPerDay /= mNumberOfVisibleDays;
+	}
+
     private void drawHeaderRowAndEvents(Canvas canvas) {
-        // Calculate the available width for each day.
-        mHeaderColumnWidth = mTimeTextWidth + mHeaderColumnPadding *2;
-        mWidthPerDay = getWidth() - mHeaderColumnWidth - mColumnGap * (mNumberOfVisibleDays - 1);
-        mWidthPerDay = mWidthPerDay/mNumberOfVisibleDays;
+	    recalculateWidthPerDay();
 
         if (mIsFirstDraw){
             if(mNumOfDaysToScroll != 0)
@@ -1012,8 +1016,11 @@ public class WeekView extends View {
      */
     public void setNumberOfVisibleDays(int numberOfVisibleDays) {
         this.mNumberOfVisibleDays = numberOfVisibleDays;
-        mCurrentOrigin.x = 0;
-        mCurrentOrigin.y = 0;
+	    float oldWidthPerDay = mWidthPerDay;
+	    recalculateWidthPerDay();
+	    mCurrentOrigin.x *= (mWidthPerDay + mColumnGap) / (oldWidthPerDay + mColumnGap);
+//        mCurrentOrigin.x = 0;
+//        mCurrentOrigin.y = 0;
         invalidate();
     }
 
@@ -1366,6 +1373,10 @@ public class WeekView extends View {
         int dateDifference = (int) ((date.getTimeInMillis() - today.getTimeInMillis()) / (1000 * 60 * 60 * 24));
         mCurrentOrigin.x = - dateDifference * (mWidthPerDay + mColumnGap);
         mNumOfDaysToScroll = -dateDifference;
+
+	    int secondsInDay = (int) ((date.getTimeInMillis() / 1000) % (86400));
+	    int verticalOffset = mHourHeight * (secondsInDay / (60 * 60));
+	    mCurrentOrigin.y = -verticalOffset;
 
         invalidate();
     }

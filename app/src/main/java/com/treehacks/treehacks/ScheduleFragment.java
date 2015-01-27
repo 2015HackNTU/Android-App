@@ -89,10 +89,9 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
 
         treeHacksStart = Calendar.getInstance();
-		treeHacksStart.set(2015, 1, 20); // months are 0-indexed while days & years are not
+		treeHacksStart.set(2015, 1, 20, 12, 0); // months are 0-indexed while days & years are not
         if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
             weekView.goToDate(treeHacksStart);
-            weekView.goToHour(12);
         }
 		return rootView;
 	}
@@ -112,14 +111,10 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
             item.setChecked(true);
         switch (item.getItemId()) {
             case R.id.action_day_view:
-                Calendar firstDay = weekView.getFirstVisibleDay();
                 weekView.setNumberOfVisibleDays(1);
-                weekView.goToDate(firstDay);
                 return true;
             case R.id.action_three_day_view:
-                firstDay = weekView.getFirstVisibleDay();
                 weekView.setNumberOfVisibleDays(3);
-                weekView.goToDate(firstDay);
                 return true;
         }
         return super.onOptionsItemSelected(item);
