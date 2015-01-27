@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,11 +30,13 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         // each data item is just a string in this case
         public TextView title;
         public TextView description;
+	    public TextView time;
 
         public ViewHolder (CardView cardView) {
             super(cardView);
             title = (TextView) cardView.findViewById(R.id.card_title);
             description = (TextView) cardView.findViewById(R.id.card_description);
+	        time = (TextView) cardView.findViewById(R.id.card_time);
         }
     }
 
@@ -48,6 +52,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         ParseObject announcement = announcements.get(i);
         viewHolder.title.setText(announcement.getString("title"));
         viewHolder.description.setText(announcement.getString("description"));
+	    SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+	    viewHolder.time.setText(sdf.format(announcement.getUpdatedAt()));
     }
 
     @Override
