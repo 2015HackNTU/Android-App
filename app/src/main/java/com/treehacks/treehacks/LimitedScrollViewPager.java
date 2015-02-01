@@ -45,6 +45,7 @@ public class LimitedScrollViewPager extends ViewPager {
 	// Remembers pointer IDs of down events in the center of the screen
 	// and ignores them in onTouchEvent
 	// Allows scrolling if the user touched the side of the device
+	// TODO: allow view scrolling on the pager title strip
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if (getCurrentItem() == 0) {
