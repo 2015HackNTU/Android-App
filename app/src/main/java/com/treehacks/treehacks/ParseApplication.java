@@ -5,17 +5,18 @@ import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
 
 /**
- * Because Parse is a piece of shit.
+ * Initializes Parse for the application
  * Created by Eddie on 1/27/2015.
  */
 public class ParseApplication extends Application {
 	@Override
 	public void onCreate() {
-
+		super.onCreate();
 		// Enable Local Datastore.
 		Parse.enableLocalDatastore(this);
 

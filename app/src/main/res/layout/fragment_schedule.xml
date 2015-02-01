@@ -12,7 +12,7 @@
     week_view:headerColumnPadding="8dp"
     week_view:headerColumnTextColor="#8f000000"
     week_view:headerRowPadding="12dp"
-    week_view:columnGap="8dp"
+    week_view:columnGap="4dp"
     week_view:noOfVisibleDays="1"
     week_view:headerRowBackgroundColor="#ffefefef"
     week_view:dayBackgroundColor="#05000000"
