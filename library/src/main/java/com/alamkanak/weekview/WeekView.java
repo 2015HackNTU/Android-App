@@ -98,6 +98,7 @@ public class WeekView extends View {
     private int mOverlappingEventGap = 0;
     private int mEventMarginVertical = 0;
     private float mXScrollingSpeed = 1f;
+	private float mXScrollFriction = 0.3f;
     private Calendar mFirstVisibleDay;
     private Calendar mLastVisibleDay;
     private int mNumOfDaysToScroll = 0;
@@ -125,7 +126,6 @@ public class WeekView extends View {
                 if (Math.abs(distanceX) > Math.abs(distanceY)) {
                     mCurrentScrollDirection = Direction.HORIZONTAL;
                     mCurrentFlingDirection = Direction.HORIZONTAL;
-//	                return false;
                 }
                 else {
                     mCurrentFlingDirection = Direction.VERTICAL;
@@ -269,6 +269,7 @@ public class WeekView extends View {
         // Scrolling initialization.
         mGestureDetector = new GestureDetectorCompat(mContext, mGestureListener);
         mScroller = new OverScroller(mContext);
+	    mScroller.setFriction(mXScrollFriction);
         mStickyScroller = new Scroller(mContext);
 
         // Measure settings for time column.

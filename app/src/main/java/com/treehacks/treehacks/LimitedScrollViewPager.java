@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -42,6 +41,10 @@ public class LimitedScrollViewPager extends ViewPager {
 		return super.onTouchEvent(ev);
 	}
 
+	// Limits scrolling when displaying schedule (index 0)
+	// Remembers pointer IDs of down events in the center of the screen
+	// and ignores them in onTouchEvent
+	// Allows scrolling if the user touched the side of the device
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if (getCurrentItem() == 0) {
@@ -49,7 +52,7 @@ public class LimitedScrollViewPager extends ViewPager {
 				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 				Point displaySize = new Point();
 				wm.getDefaultDisplay().getSize(displaySize);
-				if (ev.getRawX() < displaySize.x / 8 || displaySize.x * 7 / 8 < ev.getRawX()) {
+				if (ev.getRawX() < displaySize.x / 10 || displaySize.x * 9 / 10 < ev.getRawX()) {
 					return true;
 				}
 				else {
