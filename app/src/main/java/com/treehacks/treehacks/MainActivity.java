@@ -84,6 +84,8 @@ public class MainActivity extends ActionBarActivity {
 			        return new ScheduleFragment();
 		        case 1:
 					return new AnnounceFragment();
+		        case 2:
+			        return new FaqFragment();
 		        default:
 			        return null; // If we get here, we fucked up
 	        }
@@ -91,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
