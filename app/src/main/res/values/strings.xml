@@ -12,9 +12,9 @@
     <string name="action_three_day_view">Three-day view</string>
     <string name="submit_button">Report an issue</string>
     <string name="edit_email_hint">you@university.edu</string>
-    <string name="edit_seat_number_hint">seat no.</string>
+    <string name="edit_seat_number_hint">seat #</string>
     <string name="edit_tags_hint">#tags</string>
-    <string name="edit_description_hint">Enter your ticket description here.</string>
+    <string name="edit_description_hint"><font color="red"><b>*</b></font>Describe your issue here.</string>
     <string name="btn_submit">Submit</string>
 
 </resources>

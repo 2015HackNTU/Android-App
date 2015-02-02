@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
-                android:hint="@string/edit_seat_number_hint"/>
+                android:hint="@string/edit_seat_number_hint" />
         </LinearLayout>
         <EditText
             android:id="@+id/edit_tags"

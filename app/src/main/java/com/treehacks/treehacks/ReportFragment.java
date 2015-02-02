@@ -67,7 +67,7 @@ public class ReportFragment extends Fragment {
             public void onClick(final View v) {
                 ParseObject ticket = new ParseObject("Ticket");
                 ticket.put("email", email.getText().toString());
-                ticket.put("seatNumber", Integer.parseInt(seat.getText().toString()));
+                ticket.put("seatNumber", isEmpty(seat) ? 0 : Integer.parseInt(seat.getText().toString()));
                 ticket.put("description", descr.getText().toString());
                 ticket.put("tags", Arrays.asList(tags.getText().toString().split("\\s+")));
                 ticket.saveInBackground(new SaveCallback() {
