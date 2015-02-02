@@ -9,6 +9,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.Layout;
@@ -59,6 +60,7 @@ public class WeekView extends View {
     private float mWidthPerDay;
     private Paint mDayBackgroundPaint;
     private Paint mHourSeparatorPaint;
+	private Paint nowLinePaint;
     private float mHeaderMarginBottom;
     private Paint mTodayBackgroundPaint;
     private Paint mTodayHeaderTextPaint;
@@ -86,6 +88,8 @@ public class WeekView extends View {
     private int mHeaderRowBackgroundColor = Color.WHITE;
     private int mDayBackgroundColor = Color.rgb(245, 245, 245);
     private int mHourSeparatorColor = Color.rgb(230, 230, 230);
+	private int nowLineColor = Color.rgb(163, 185, 204);
+	private int nowLineThickness = 6;
     private int mTodayBackgroundColor = Color.rgb(239, 247, 254);
     private int mHourSeparatorHeight = 2;
     private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
@@ -270,7 +274,8 @@ public class WeekView extends View {
         // Scrolling initialization.
         mGestureDetector = new GestureDetectorCompat(mContext, mGestureListener);
         mScroller = new OverScroller(mContext);
-	    mScroller.setFriction(mXScrollFriction);
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+	        mScroller.setFriction(mXScrollFriction);
         mStickyScroller = new Scroller(mContext);
 
         // Measure settings for time column.
@@ -306,6 +311,13 @@ public class WeekView extends View {
         mHourSeparatorPaint.setStyle(Paint.Style.STROKE);
         mHourSeparatorPaint.setStrokeWidth(mHourSeparatorHeight);
         mHourSeparatorPaint.setColor(mHourSeparatorColor);
+
+	    // Prepare now line paint
+	    nowLinePaint = new Paint();
+	    nowLinePaint.setStyle(Paint.Style.STROKE);
+	    nowLinePaint.setStrokeWidth(nowLineThickness);
+	    nowLinePaint.setShadowLayer(nowLineThickness * 12, 0, 0, nowLineColor); // Appears not to do anything
+	    nowLinePaint.setColor(nowLineColor);
 
         // Prepare today background color paint.
         mTodayBackgroundPaint = new Paint();
@@ -463,6 +475,16 @@ public class WeekView extends View {
 
             // Draw the lines for hours.
             canvas.drawLines(hourLines, mHourSeparatorPaint);
+
+	        // Draw current time line
+	        if (sameDay) {
+		        Calendar currentTime = Calendar.getInstance();
+		        long currentMillis = currentTime.getTimeInMillis() + currentTime.getTimeZone().getRawOffset();
+		        int secondsToday = (int) (currentMillis % (86400 * 1000) / 1000);
+		        float hours = secondsToday / 3600f;
+		        float yPos = mHeaderTextHeight + mHeaderRowPadding * 2 + mCurrentOrigin.y + mHourHeight * hours + mTimeTextHeight/2 + mHeaderMarginBottom;
+		        canvas.drawLine(start, yPos, startPixel + mWidthPerDay, yPos, nowLinePaint);
+	        }
 
             // Draw the events.
             drawEvents(day, startPixel, canvas);
