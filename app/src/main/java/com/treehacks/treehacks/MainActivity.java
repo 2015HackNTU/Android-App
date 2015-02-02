@@ -86,6 +86,8 @@ public class MainActivity extends ActionBarActivity {
 					return new AnnounceFragment();
 		        case 2:
 			        return new FaqFragment();
+                case 3:
+                    return new ReportFragment();
 		        default:
 			        return null; // If we get here, we fucked up
 	        }
@@ -93,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -106,6 +108,8 @@ public class MainActivity extends ActionBarActivity {
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return "Report an issue".toUpperCase(l);
             }
             return null;
         }
