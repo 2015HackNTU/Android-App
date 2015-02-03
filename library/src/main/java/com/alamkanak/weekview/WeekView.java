@@ -316,7 +316,7 @@ public class WeekView extends View {
 	    nowLinePaint = new Paint();
 	    nowLinePaint.setStyle(Paint.Style.STROKE);
 	    nowLinePaint.setStrokeWidth(nowLineThickness);
-	    nowLinePaint.setShadowLayer(nowLineThickness * 12, 0, 0, nowLineColor); // Appears not to do anything
+	    nowLinePaint.setShadowLayer(nowLineThickness * 2, 0, 0, nowLineColor); // Appears not to do anything
 	    nowLinePaint.setColor(nowLineColor);
 
         // Prepare today background color paint.

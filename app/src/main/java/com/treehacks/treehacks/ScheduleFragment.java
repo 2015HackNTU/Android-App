@@ -38,7 +38,6 @@ import java.util.TimeZone;
  */
 public class ScheduleFragment extends Fragment implements WeekView.EventClickListener, WeekView.MonthChangeListener, WeekView.EventLongPressListener {
 	WeekView weekView;
-    Calendar treeHacksStart;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,11 +121,16 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
 
-        treeHacksStart = Calendar.getInstance();
+        Calendar treeHacksStart = Calendar.getInstance();
 		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 12, 0);
-        if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
-            weekView.goToDate(treeHacksStart);
-        }
+		Calendar treeHacksEnd = Calendar.getInstance();
+		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 8, 0);
+		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
+			weekView.goToDate(treeHacksStart);
+		}
+		else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis()) {
+			weekView.goToDate(treeHacksEnd);
+		}
 		return rootView;
 	}
 
