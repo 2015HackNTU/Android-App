@@ -201,6 +201,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			Calendar endTime = Calendar.getInstance();
 			endTime.setTime(endDate);
 			WeekViewEvent scheduleEvent = new WeekViewEvent(0, title, startTime, endTime);
+			scheduleEvent.setColor(Color.rgb(238, 145, 75)); // TreeHacks orange
 			events.add(scheduleEvent);
 		}
 		return events;
