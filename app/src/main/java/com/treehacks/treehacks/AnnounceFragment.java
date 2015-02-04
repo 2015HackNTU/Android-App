@@ -51,12 +51,11 @@ public class AnnounceFragment extends Fragment {
                 if (e == null) {
 	                // Skip if no new updates are found
 	                // Get newest updatedAt from cloud events
-	                Date newestChange = new Date(1);
-	                if (!parseCloudAnnouncements.isEmpty()) {
-		                Date change = parseCloudAnnouncements.get(0).getUpdatedAt();
-		                if (change.after(newestChange))
-			                newestChange = change;
-	                }
+	                Date newestChange;
+	                if (!parseCloudAnnouncements.isEmpty())
+		                newestChange = parseCloudAnnouncements.get(0).getUpdatedAt();
+	                else
+		                newestChange = new Date(1);
 	                // Get stored updatedAt
 	                Date storedChange = new Date(0);
 	                ParseQuery<ParseObject> getStoredChangeTime = ParseQuery.getQuery("AnnounceChangeTime");
