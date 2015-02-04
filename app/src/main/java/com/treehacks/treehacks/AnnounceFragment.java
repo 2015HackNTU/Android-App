@@ -44,7 +44,7 @@ public class AnnounceFragment extends Fragment {
 
         // Sync announcements from cloud
         ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Push");
-	    cloudQuery.orderByAscending("updatedAt");
+	    cloudQuery.orderByDescending("updatedAt");
         cloudQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseCloudAnnouncements, ParseException e) {
@@ -52,8 +52,8 @@ public class AnnounceFragment extends Fragment {
 	                // Skip if no new updates are found
 	                // Get newest updatedAt from cloud events
 	                Date newestChange = new Date(1);
-	                for (ParseObject o : parseCloudAnnouncements) {
-		                Date change = o.getUpdatedAt();
+	                if (!parseCloudAnnouncements.isEmpty()) {
+		                Date change = parseCloudAnnouncements.get(0).getUpdatedAt();
 		                if (change.after(newestChange))
 			                newestChange = change;
 	                }
@@ -122,7 +122,7 @@ public class AnnounceFragment extends Fragment {
         // Get announcements from cache
         ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Push");
         localQuery.fromLocalDatastore();
-		localQuery.orderByAscending("updatedAt");
+		localQuery.orderByDescending("updatedAt");
         List<ParseObject> pushes;
         try {
             pushes = localQuery.find();

@@ -42,7 +42,7 @@ public class FaqFragment extends Fragment {
 
 		// Sync announcements from cloud
 		ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("FAQ");
-		cloudQuery.orderByAscending("updatedAt");
+		cloudQuery.orderByDescending("updatedAt");
 		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(final List<ParseObject> parseCloudFaqs, ParseException e) {
@@ -50,8 +50,8 @@ public class FaqFragment extends Fragment {
 					// Skip if no new updates are found
 					// Get newest updatedAt from cloud events
 					Date newestChange = new Date(1);
-					for (ParseObject o : parseCloudFaqs) {
-						Date change = o.getUpdatedAt();
+					if (!parseCloudFaqs.isEmpty()) {
+						Date change = parseCloudFaqs.get(0).getUpdatedAt();
 						if (change.after(newestChange))
 							newestChange = change;
 					}
@@ -120,7 +120,7 @@ public class FaqFragment extends Fragment {
 		// Get faqs from cache
 		ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("FAQ");
 		localQuery.fromLocalDatastore();
-		localQuery.orderByAscending("updatedAt");
+		localQuery.orderByDescending("updatedAt");
 		List<ParseObject> faqs;
 		try {
 			faqs = localQuery.find();
