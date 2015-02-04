@@ -2,6 +2,7 @@ package com.treehacks.treehacks;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,9 +52,16 @@ public class LimitedScrollViewPager extends ViewPager {
 		if (getCurrentItem() == 0) {
 			if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
 				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-				Point displaySize = new Point();
-				wm.getDefaultDisplay().getSize(displaySize);
-				if (ev.getRawX() < displaySize.x / 10 || displaySize.x * 9 / 10 < ev.getRawX()) {
+				int width;
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					Point displaySize = new Point();
+					wm.getDefaultDisplay().getSize(displaySize);
+					width = displaySize.x;
+				}
+				else {
+					width = wm.getDefaultDisplay().getWidth();
+				}
+				if (ev.getRawX() < width / 8 || width * 7 / 8 < ev.getRawX()) {
 					return true;
 				}
 				else {
