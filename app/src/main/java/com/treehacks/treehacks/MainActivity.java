@@ -2,6 +2,7 @@ package com.treehacks.treehacks;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,11 @@ public class MainActivity extends ActionBarActivity {
      */
     LimitedScrollViewPager mViewPager;
 
+	ScheduleFragment scheduleFragment;
+	AnnounceFragment announceFragment;
+	FaqFragment faqFragment;
+	ReportFragment reportFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,10 @@ public class MainActivity extends ActionBarActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 	    mViewPager.setCurrentItem(0); // Show middle screen (schedule)
 
+		scheduleFragment = new ScheduleFragment();
+	    announceFragment = new AnnounceFragment();
+	    faqFragment = new FaqFragment();
+	    reportFragment = new ReportFragment();
     }
 
     @Override
@@ -81,13 +91,13 @@ public class MainActivity extends ActionBarActivity {
 	        // getItem is called to instantiate the fragment for the given page.
 	        switch (position) {
 		        case 0:
-			        return new ScheduleFragment();
+			        return scheduleFragment;
 		        case 1:
-					return new AnnounceFragment();
+					return announceFragment;
 		        case 2:
-			        return new FaqFragment();
+			        return faqFragment;
                 case 3:
-                    return new ReportFragment();
+                    return reportFragment;
 		        default:
 			        return null; // If we get here, we fucked up
 	        }
@@ -109,10 +119,21 @@ public class MainActivity extends ActionBarActivity {
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
                 case 3:
-                    return "Report an issue".toUpperCase(l);
+                    return getString(R.string.title_section4).toUpperCase(l);
             }
             return null;
         }
     }
+
+//	@Override
+//	protected void onNewIntent(Intent intent) {
+//		setIntent(intent);
+//		switch (intent.getAction()) {
+//			case Intent.ACTION_SEARCH:
+////				mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem()).
+//			default:
+//				super.onNewIntent(intent);
+//		}
+//	}
 
 }

@@ -136,7 +136,6 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_schedule, menu);
 	    if (weekView.getNumberOfVisibleDays() == 1)
@@ -158,8 +157,9 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
             case R.id.action_three_day_view:
                 weekView.setNumberOfVisibleDays(3);
                 return true;
+            default:
+	            return false;
         }
-        return super.onOptionsItemSelected(item);
     }
 
 	@Override

@@ -1,11 +1,18 @@
 package com.treehacks.treehacks;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -126,5 +133,39 @@ public class FaqFragment extends Fragment {
 		faqAdapter = new FaqAdapter(faqs);
 		faqView.setAdapter(faqAdapter);
 		return rootView;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.menu_search, menu);
+
+		// Assoc. searchview config to SearchView
+		SearchManager sm = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+		SearchView sv = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+		sv.setSearchableInfo(sm.getSearchableInfo(getActivity().getComponentName()));
+		sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String s) {
+				faqAdapter.getFilter().filter(s);
+				return false;
+			}
+		});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_search:
+				getActivity().onSearchRequested();
+				return true;
+			default:
+				return false;
+		}
 	}
 }

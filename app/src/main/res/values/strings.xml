@@ -16,5 +16,8 @@
     <string name="edit_tags_hint">#tags</string>
     <string name="edit_description_hint"><font color="red"><b>*</b></font>Describe your issue here.</string>
     <string name="btn_submit">Submit</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Filter results</string>
+    <string name="title_section4">Report an issue</string>
 
 </resources>
