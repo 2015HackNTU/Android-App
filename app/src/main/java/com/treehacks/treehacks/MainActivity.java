@@ -93,8 +93,14 @@ public class MainActivity extends ActionBarActivity {
 		        case 0:
 			        return scheduleFragment;
 		        case 1:
+//			        try {
+//				        faqFragment.clearSearch();
+//			        } catch (NullPointerException e) {}
 					return announceFragment;
 		        case 2:
+//			        try {
+//				        announceFragment.clearSearch();
+//			        } catch (NullPointerException e) {}
 			        return faqFragment;
                 case 3:
                     return reportFragment;
@@ -124,16 +130,5 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
     }
-
-//	@Override
-//	protected void onNewIntent(Intent intent) {
-//		setIntent(intent);
-//		switch (intent.getAction()) {
-//			case Intent.ACTION_SEARCH:
-////				mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem()).
-//			default:
-//				super.onNewIntent(intent);
-//		}
-//	}
 
 }

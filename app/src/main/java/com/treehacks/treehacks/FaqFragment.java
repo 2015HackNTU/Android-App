@@ -33,7 +33,7 @@ import java.util.List;
 public class FaqFragment extends Fragment {
 	RecyclerView faqView;
 	FaqAdapter faqAdapter;
-
+	SearchView sv;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -142,8 +142,9 @@ public class FaqFragment extends Fragment {
 
 		// Assoc. searchview config to SearchView
 		SearchManager sm = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-		SearchView sv = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+		sv = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 		sv.setSearchableInfo(sm.getSearchableInfo(getActivity().getComponentName()));
+		sv.setQueryHint(getResources().getString(R.string.search_hint));
 		sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String s) {
@@ -158,14 +159,4 @@ public class FaqFragment extends Fragment {
 		});
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_search:
-				getActivity().onSearchRequested();
-				return true;
-			default:
-				return false;
-		}
-	}
 }
