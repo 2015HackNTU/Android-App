@@ -135,6 +135,13 @@ public class FaqFragment extends Fragment {
 	}
 
 	@Override
+	public void onStop() {
+		sv.setQuery("", false);
+		sv.clearFocus();
+		super.onStop();
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.menu_search, menu);
