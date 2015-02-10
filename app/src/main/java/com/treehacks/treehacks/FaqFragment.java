@@ -134,6 +134,7 @@ public class FaqFragment extends Fragment {
 		return rootView;
 	}
 
+	// Clear searchview on page change
 	@Override
 	public void onStop() {
 		sv.setQuery("", false);
