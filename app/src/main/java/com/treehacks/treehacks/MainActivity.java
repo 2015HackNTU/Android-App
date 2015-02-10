@@ -2,42 +2,28 @@ package com.treehacks.treehacks;
 
 import java.util.Locale;
 
-import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParsePushBroadcastReceiver;
-import com.parse.SaveCallback;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    LimitedScrollViewPager mViewPager;
+	DrawerLayout drawerLayout;
+	ListView drawerList;
+	ActionBarDrawerToggle drawerToggle;
 
 	ScheduleFragment scheduleFragment;
 	AnnounceFragment announceFragment;
@@ -49,20 +35,61 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_main);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (LimitedScrollViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-	    mViewPager.setCurrentItem(0); // Show middle screen (schedule)
-
-		scheduleFragment = new ScheduleFragment();
+	    // Initialize pages
+	    scheduleFragment = new ScheduleFragment();
 	    announceFragment = new AnnounceFragment();
 	    faqFragment = new FaqFragment();
 	    reportFragment = new ReportFragment();
+
+	    // Show hamburger menu icon
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+	    // Initialize navigation list
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	    drawerList = (ListView) findViewById(R.id.nav_drawer);
+	    drawerList.setAdapter(new NavAdapter(this));
+	    drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    @Override
+		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			    // Get page to display
+			    String fragTitle = ((NavAdapter.ViewHolder) view.getTag()).title.getText().toString();
+			    Fragment page = getPage(fragTitle);
+
+			    // Show page
+				FragmentManager fm = getSupportFragmentManager();
+			    fm.beginTransaction()
+					    .replace(R.id.content_frame, page).commit();
+
+			    // Highlight the selected item, update the title, and close the drawer
+			    drawerList.setItemChecked(position, true);
+			    setTitle(fragTitle);
+			    drawerLayout.closeDrawer(drawerList);
+		    }
+	    });
+
+	    // Initialize drawer behavior
+	    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+	    drawerLayout.setDrawerListener(drawerToggle);
+
+	    // Show first page
+	    FragmentManager fm = getSupportFragmentManager();
+	    fm.beginTransaction()
+			    .replace(R.id.content_frame, scheduleFragment).commit();
+	    drawerList.setItemChecked(0, true);
+	    setTitle("Schedule");
     }
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		drawerToggle.onConfigurationChanged(newConfig);
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,62 +100,23 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+	    return drawerToggle.onOptionsItemSelected(item) ||
+	        super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-	        // getItem is called to instantiate the fragment for the given page.
-	        switch (position) {
-		        case 0:
-			        return scheduleFragment;
-		        case 1:
-//			        try {
-//				        faqFragment.clearSearch();
-//			        } catch (NullPointerException e) {}
-					return announceFragment;
-		        case 2:
-//			        try {
-//				        announceFragment.clearSearch();
-//			        } catch (NullPointerException e) {}
-			        return faqFragment;
-                case 3:
-                    return reportFragment;
-		        default:
-			        return null; // If we get here, we fucked up
-	        }
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-                case 3:
-                    return getString(R.string.title_section4).toUpperCase(l);
-            }
-            return null;
-        }
-    }
+	Fragment getPage(String title) {
+		switch (title) {
+			case "Schedule":
+				return scheduleFragment;
+			case "Announcements":
+				return announceFragment;
+			case "FAQ":
+				return faqFragment;
+			case "Report":
+				return reportFragment;
+			default:
+				return null;
+		}
+	}
 
 }
