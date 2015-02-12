@@ -98,8 +98,7 @@ public class FaqFragment extends Fragment {
 						}
 					});
 					if (faqAdapter != null) {
-						faqAdapter.faqs = parseCloudFaqs;
-						faqAdapter.notifyDataSetChanged();
+						faqAdapter.changeDataSet(parseCloudFaqs);
 					}
 				} else {
 					e.printStackTrace();

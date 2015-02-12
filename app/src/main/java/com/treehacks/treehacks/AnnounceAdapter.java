@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.parse.Parse;
 import com.parse.ParseObject;
 
 import java.text.SimpleDateFormat;
@@ -23,11 +24,16 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
     public List<ParseObject> announcements;
 	List<ParseObject> filteredAnnouncements;
 
-
     public AnnounceAdapter(List<ParseObject> announcements) {
         this.announcements = announcements;
 	    filteredAnnouncements = announcements;
     }
+
+	public void changeDataSet(List<ParseObject> set) {
+		announcements = set;
+		filteredAnnouncements = set;
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public Filter getFilter() {

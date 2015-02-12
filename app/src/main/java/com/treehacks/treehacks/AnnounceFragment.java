@@ -100,8 +100,7 @@ public class AnnounceFragment extends Fragment {
                         }
                     });
                     if (announceAdapter != null) {
-                        announceAdapter.announcements = parseCloudAnnouncements;
-                        announceAdapter.notifyDataSetChanged();
+	                    announceAdapter.changeDataSet(parseCloudAnnouncements);
                     }
                 } else {
                     e.printStackTrace();

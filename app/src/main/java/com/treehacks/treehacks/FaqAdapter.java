@@ -26,6 +26,12 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> impl
 		filteredFaqs = faqs;
 	}
 
+	public void changeDataSet(List<ParseObject> set) {
+		faqs = set;
+		filteredFaqs = set;
+		notifyDataSetChanged();
+	}
+
 	@Override
 	public Filter getFilter() {
 		return faqFilter;
