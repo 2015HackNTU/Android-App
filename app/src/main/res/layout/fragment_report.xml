@@ -2,56 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/btn_make_report"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="@string/contact_header"
+        android:background="@color/treehacks_orange"
+        android:textColor="@color/primary_text_default_material_dark"
+        android:gravity="bottom"
+        android:padding="16dp"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/submit_button"/>
+        android:hint="@string/edit_name_hint"
+        android:inputType="textPersonName"
+        android:layout_margin="8dp"/>
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_email_hint"
+        android:inputType="textEmailAddress"
+        android:layout_margin="8dp"/>
+    <EditText
+        android:id="@+id/edit_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textShortMessage"
+        android:hint="@string/edit_location_hint"
+        android:layout_margin="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="@string/issue_header"
+        android:background="@color/treehacks_orange"
+        android:textColor="@color/primary_text_default_material_dark"
+        android:gravity="bottom"
+        android:padding="16dp"
+        android:textSize="20sp"/>
     <LinearLayout
-        android:id="@+id/report_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp">
+        <Spinner
+            android:id="@+id/spin_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/edit_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_category_hint"/>
+        </LinearLayout>
+    <EditText
+        android:id="@+id/edit_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edit_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:hint="@string/edit_email_hint"
-                android:inputType="textEmailAddress" />
-            <EditText
-                android:id="@+id/edit_seat_number"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:hint="@string/edit_seat_number_hint" />
-        </LinearLayout>
-        <EditText
-            android:id="@+id/edit_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edit_tags_hint"
-            android:inputType="textShortMessage" />
-        <EditText
-            android:id="@+id/edit_description"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:hint="@string/edit_description_hint"
-            android:inputType="textLongMessage"
-            android:gravity="top"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/btn_submit_report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_submit"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+        android:hint="@string/edit_description_hint"
+        android:inputType="textLongMessage"
+        android:gravity="top"
+        android:layout_margin="8dp"/>
 </LinearLayout>

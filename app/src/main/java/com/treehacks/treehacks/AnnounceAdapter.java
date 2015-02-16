@@ -85,8 +85,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 			ArrayList<ParseObject> retainedAnnouncements = new ArrayList<>();
 			// Add announcements if either of title or description match
 			for (ParseObject announcement : announcements) {
-				if (announcement.getString("title").toLowerCase().contains(filterString) ||
-						announcement.getString("description").toLowerCase().contains(filterString)) {
+				if ((announcement.containsKey("title") && announcement.getString("title").toLowerCase().contains(filterString)) ||
+						(announcement.containsKey("description") && announcement.getString("description").toLowerCase().contains(filterString))) {
 					retainedAnnouncements.add(announcement);
 				}
 			}

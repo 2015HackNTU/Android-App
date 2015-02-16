@@ -78,8 +78,8 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> impl
 			ArrayList<ParseObject> retainedFaqs = new ArrayList<>();
 			// Add announcements if either of title or description match
 			for (ParseObject faq : faqs) {
-				if (faq.getString("question").toLowerCase().contains(filterString) ||
-						faq.getString("answer").toLowerCase().contains(filterString)) {
+				if ((faq.containsKey("question") && faq.getString("question").toLowerCase().contains(filterString)) ||
+						(faq.containsKey("answer") && faq.getString("answer").toLowerCase().contains(filterString))) {
 					retainedFaqs.add(faq);
 				}
 			}

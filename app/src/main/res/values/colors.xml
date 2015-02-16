@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="event_color_01">#59dbe0</color>
-    <color name="event_color_02">#f57f68</color>
-    <color name="event_color_03">#87d288</color>
-    <color name="event_color_04">#f8b552</color>
     <color name="treehacks_red">#BF2B2B</color>
     <color name="treehacks_orange">#EE914B</color>
     <color name="treehacks_text">#888</color>
     <color name="active_bg_color">#eee</color>
     <color name="pressed_bg_color">#ddd</color>
+    <color name="textDark">#ddd</color>
 </resources>

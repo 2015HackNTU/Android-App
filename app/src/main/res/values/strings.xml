@@ -2,23 +2,30 @@
 <resources>
 
     <string name="app_name">TreeHacks</string>
-    <string name="title_section1">Schedule</string>
-    <string name="title_section2">Announcements</string>
-    <string name="title_section3">FAQ</string>
-    <string name="action_settings">Settings</string>
+
     <string name="parse_app_id">AfM79brCkxAAkvQQ08dxphlbogFcfzjH4hobqTVi</string>
     <string name="parse_client_key">pQwos49fJjtPI9PDJwlTva94K0jcFwpYDPbAGgvv</string>
+
+    <string name="title_schedule">Schedule</string>
+    <string name="title_announce">Announcements</string>
+    <string name="title_faq">FAQ</string>
+    <string name="title_report">Report</string>
+
     <string name="action_day_view">One-day view</string>
     <string name="action_three_day_view">Three-day view</string>
-    <string name="submit_button">Report an issue</string>
-    <string name="edit_email_hint">you@university.edu</string>
-    <string name="edit_seat_number_hint">seat #</string>
-    <string name="edit_tags_hint">#tags</string>
-    <string name="edit_description_hint"><font color="red"><b>*</b></font>Describe your issue here.</string>
-    <string name="btn_submit">Submit</string>
+
+    <string name="contact_header">CONTACT</string>
+    <string name="edit_name_hint">Your Name (optional)</string>
+    <string name="edit_email_hint">you@university.edu (optional)</string>
+    <string name="edit_location_hint">location (optional)</string>
+    <string name="issue_header">ISSUE</string>
+    <string name="edit_category_hint">Other category</string>
+    <string name="edit_description_hint">Describe your issue here.</string>
+    <string name="action_report">SUBMIT</string>
+
     <string name="action_search">Search</string>
     <string name="search_hint">Filter results</string>
-    <string name="title_section4">Report an issue</string>
+
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 

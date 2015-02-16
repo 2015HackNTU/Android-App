@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
 	    fm.beginTransaction()
 			    .replace(R.id.content_frame, scheduleFragment).commit();
 	    drawerList.setItemChecked(0, true);
-	    setTitle("Schedule");
+	    setTitle(getString(R.string.title_schedule));
     }
 
 	@Override
