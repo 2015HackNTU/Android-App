@@ -6,4 +6,9 @@
     <color name="active_bg_color">#eee</color>
     <color name="pressed_bg_color">#ddd</color>
     <color name="textDark">#ddd</color>
+
+    <!-- An assortment of material design colors.
+         Pulled from http://www.google.com/design/spec/style/color.html#color-color-palette -->
+    <color name="bluegrey_400">#78909C</color>
+
 </resources>

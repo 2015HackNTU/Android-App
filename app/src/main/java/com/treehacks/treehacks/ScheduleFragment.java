@@ -122,7 +122,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
 
         Calendar treeHacksStart = Calendar.getInstance();
-		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
+		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 16, 0);
 		Calendar treeHacksEnd = Calendar.getInstance();
 		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 12, 0);
 		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
@@ -201,7 +201,26 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			endTime.setTime(endDate);
 			WeekViewEvent scheduleEvent = new WeekViewEvent(0, title, startTime, endTime);
-			scheduleEvent.setColor(Color.rgb(238, 145, 75)); // TreeHacks orange
+
+			// Set event color based on event type
+			int eventColor;
+			String type = parseEvent.getString("type");
+			if (type != null)
+				switch (type) {
+					case "admin":
+						eventColor = getResources().getColor(R.color.treehacks_red);
+						break;
+					case "food":
+						eventColor = getResources().getColor(R.color.bluegrey_400);
+						break;
+					default:
+						eventColor = getResources().getColor(R.color.bluegrey_400);
+						break;
+				}
+			else
+				eventColor = getResources().getColor(R.color.bluegrey_400);
+
+			scheduleEvent.setColor(eventColor);
 			events.add(scheduleEvent);
 		}
 		return events;

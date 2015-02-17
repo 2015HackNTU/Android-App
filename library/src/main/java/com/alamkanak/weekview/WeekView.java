@@ -87,8 +87,8 @@ public class WeekView extends View {
     private int mHeaderRowPadding = 10;
     private int mHeaderRowBackgroundColor = Color.WHITE;
     private int mDayBackgroundColor = Color.rgb(245, 245, 245);
-    private int mHourSeparatorColor = Color.rgb(230, 230, 230);
-	private int nowLineColor = Color.rgb(163, 185, 204);
+    private int mHourSeparatorColor = Color.rgb(210, 210, 210);
+	private int nowLineColor = Color.rgb(39, 137, 228);
 	private int nowLineThickness = 6;
     private int mTodayBackgroundColor = Color.rgb(239, 247, 254);
     private int mHourSeparatorHeight = 2;
@@ -386,6 +386,14 @@ public class WeekView extends View {
                 throw new IllegalStateException("A DateTimeInterpreter must not return null time");
             if (top < getHeight()) canvas.drawText(time, mTimeTextWidth + mHeaderColumnPadding, top + mTimeTextHeight, mTimeTextPaint);
         }
+
+	    // Draw now line
+	    Calendar currentTime = Calendar.getInstance();
+	    long currentMillis = currentTime.getTimeInMillis() + currentTime.getTimeZone().getRawOffset();
+	    int secondsToday = (int) (currentMillis % (86400 * 1000) / 1000);
+	    float hours = secondsToday / 3600f;
+	    float yPos = mHeaderTextHeight + mHeaderRowPadding * 2 + mCurrentOrigin.y + mHourHeight * hours + mTimeTextHeight/2 + mHeaderMarginBottom;
+	    canvas.drawLine(0, yPos, mHeaderColumnWidth, yPos, nowLinePaint);
     }
 
 	private void recalculateWidthPerDay() {
@@ -1387,8 +1395,13 @@ public class WeekView extends View {
     public void goToDate(Calendar date) {
         mScroller.forceFinished(true);
 
+	    // Y scroll
 	    int secondsInDay = (int) (((date.getTimeInMillis() + date.getTimeZone().getRawOffset()) / 1000) % 86400);
 	    int verticalOffset = mHourHeight * (secondsInDay / (60 * 60));
+	    // Keep scroll on screen
+	    float maxYScroll = mHourHeight * 24 - getHeight() + mHeaderTextHeight + mHeaderRowPadding * 2 + mHeaderMarginBottom;
+	    if (verticalOffset > maxYScroll)
+		    verticalOffset = (int) maxYScroll;
 	    mCurrentOrigin.y = -verticalOffset;
 
         date.set(Calendar.HOUR_OF_DAY, 0);
@@ -1398,6 +1411,7 @@ public class WeekView extends View {
 
         mRefreshEvents = true;
 
+	    // X scroll
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);

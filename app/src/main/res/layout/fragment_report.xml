@@ -49,12 +49,14 @@
         <Spinner
             android:id="@+id/spin_category"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:prompt="@string/spin_category_hint"/>
         <EditText
             android:id="@+id/edit_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_category_hint"/>
+            android:hint="@string/edit_category_hint"
+            android:inputType="textShortMessage"/>
         </LinearLayout>
     <EditText
         android:id="@+id/edit_description"

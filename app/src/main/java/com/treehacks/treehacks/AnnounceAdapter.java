@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.Parse;
@@ -48,12 +50,14 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         public TextView title;
         public TextView description;
 	    public TextView time;
+		public RelativeLayout parent; // for removing description TextView when it's empty
 
         public ViewHolder (CardView cardView) {
             super(cardView);
             title = (TextView) cardView.findViewById(R.id.card_title);
             description = (TextView) cardView.findViewById(R.id.card_description);
 	        time = (TextView) cardView.findViewById(R.id.card_time);
+	        parent = (RelativeLayout) description.getParent();
         }
     }
 
@@ -67,7 +71,12 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
     public void onBindViewHolder(AnnounceAdapter.ViewHolder viewHolder, int i) {
         ParseObject announcement = filteredAnnouncements.get(i);
         viewHolder.title.setText(announcement.getString("title"));
-        viewHolder.description.setText(announcement.getString("description"));
+	    String description = announcement.getString("description");
+	    if (description == null || description.trim().isEmpty()) {
+		    viewHolder.parent.removeView(viewHolder.description);
+	    }
+		else
+            viewHolder.description.setText(description);
 	    SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
 	    viewHolder.time.setText(sdf.format(announcement.getUpdatedAt()));
     }
