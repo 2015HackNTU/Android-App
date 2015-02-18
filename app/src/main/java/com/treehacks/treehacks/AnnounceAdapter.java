@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by eddie_000 on 1/25/2015.
@@ -50,14 +51,14 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         public TextView title;
         public TextView description;
 	    public TextView time;
-		public RelativeLayout parent; // for removing description TextView when it's empty
+//		public RelativeLayout parent; // for removing description TextView when it's empty
 
         public ViewHolder (CardView cardView) {
             super(cardView);
             title = (TextView) cardView.findViewById(R.id.card_title);
             description = (TextView) cardView.findViewById(R.id.card_description);
 	        time = (TextView) cardView.findViewById(R.id.card_time);
-	        parent = (RelativeLayout) description.getParent();
+//	        parent = (RelativeLayout) description.getParent();
         }
     }
 
@@ -72,12 +73,17 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         ParseObject announcement = filteredAnnouncements.get(i);
         viewHolder.title.setText(announcement.getString("title"));
 	    String description = announcement.getString("description");
-	    if (description == null || description.trim().isEmpty()) {
-		    viewHolder.parent.removeView(viewHolder.description);
-	    }
+	    viewHolder.description.setText(description);
+
+	    // Remove description field when empty
+	    ViewGroup.LayoutParams lps = viewHolder.description.getLayoutParams();
+	    if (description == null || description.trim().isEmpty())
+		    lps.height = 0;
 		else
-            viewHolder.description.setText(description);
-	    SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+		    lps.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+	    viewHolder.description.setLayoutParams(lps);
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.US);
 	    viewHolder.time.setText(sdf.format(announcement.getUpdatedAt()));
     }
 

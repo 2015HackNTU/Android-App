@@ -17,7 +17,7 @@
     <string name="contact_header">CONTACT</string>
     <string name="edit_name_hint">Your Name (optional)</string>
     <string name="edit_email_hint">you@university.edu (optional)</string>
-    <string name="edit_location_hint">location (optional)</string>
+    <string name="edit_location_hint">Your location (optional)</string>
     <string name="issue_header">ISSUE</string>
     <string name="spin_category_hint">Category</string>
     <string name="edit_category_hint">Other category</string>

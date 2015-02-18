@@ -111,20 +111,19 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		// Get a reference for the week view in the layout.
 		weekView = (WeekView) rootView.findViewById(R.id.week_view);
 
-		// TODO: set date
 		weekView.setOnEventClickListener(this);
 		weekView.setMonthChangeListener(this);
 		weekView.setEventLongPressListener(this);
 
         weekView.setNumberOfVisibleDays(1);
-        weekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+        weekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
         weekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
-        weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+        weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics()));
 
         Calendar treeHacksStart = Calendar.getInstance();
 		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 16, 0);
 		Calendar treeHacksEnd = Calendar.getInstance();
-		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 12, 0);
+		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 9, 0);
 		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
 			weekView.goToDate(treeHacksStart);
 		}
@@ -211,7 +210,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 						eventColor = getResources().getColor(R.color.treehacks_red);
 						break;
 					case "food":
-						eventColor = getResources().getColor(R.color.bluegrey_400);
+						eventColor = getResources().getColor(R.color.treehacks_orange);
 						break;
 					default:
 						eventColor = getResources().getColor(R.color.bluegrey_400);

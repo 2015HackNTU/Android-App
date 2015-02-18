@@ -15,7 +15,8 @@
                 android:id="@+id/card_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text_default_material_light"
                 android:gravity="end"
                 android:paddingTop="6sp"
                 android:layout_alignParentTop="true"
@@ -25,10 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
+                android:textColor="@color/primary_text_default_material_light"
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@id/card_time"/>
             <TextView
                 android:id="@+id/card_description"
+                android:textColor="@color/primary_text_default_material_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

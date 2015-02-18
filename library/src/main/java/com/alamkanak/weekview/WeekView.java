@@ -95,7 +95,7 @@ public class WeekView extends View {
     private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
     private int mEventTextSize = 12;
     private int mEventTextColor = Color.BLACK;
-    private int mEventPadding = 8;
+    private int mEventPadding = 20;
     private int mHeaderColumnBackgroundColor = Color.WHITE;
     private int mDefaultEventColor;
     private boolean mIsFirstDraw = true;
@@ -615,28 +615,29 @@ public class WeekView extends View {
      * @param originalLeft The original left position of the rectangle. The rectangle may have some of its portion outside of the visible area.
      */
     private void drawText(String text, RectF rect, Canvas canvas, float originalTop, float originalLeft) {
-        if (rect.right - rect.left - mEventPadding * 2 < 0) return;
+	    int eventPadding = mEventPadding - getNumberOfVisibleDays() * 4; // Kill me
+        if (rect.right - rect.left - eventPadding * 2 < 0) return;
 
         // Get text dimensions
-        StaticLayout textLayout = new StaticLayout(text, mEventTextPaint, (int) (rect.right - originalLeft - mEventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        StaticLayout textLayout = new StaticLayout(text, mEventTextPaint, (int) (rect.right - originalLeft - eventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
         // Crop height
-        int availableHeight = (int) (rect.bottom - originalTop - mEventPadding * 2);
+        int availableHeight = (int) (rect.bottom - originalTop - eventPadding * 2);
         int lineHeight = textLayout.getHeight() / textLayout.getLineCount();
-        if (lineHeight < availableHeight && textLayout.getHeight() > rect.height() - mEventPadding * 2) {
+        if (lineHeight < availableHeight && textLayout.getHeight() > rect.height() - eventPadding * 2) {
             int lineCount = textLayout.getLineCount();
             int availableLineCount = (int) Math.floor(lineCount * availableHeight / textLayout.getHeight());
-            float widthAvailable = (rect.right - originalLeft - mEventPadding * 2) * availableLineCount;
+            float widthAvailable = (rect.right - originalLeft - eventPadding * 2) * availableLineCount;
             textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, widthAvailable, TextUtils.TruncateAt.END), mEventTextPaint, (int) (rect.right - originalLeft - mEventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         }
         else if (lineHeight >= availableHeight) {
-            int width = (int) (rect.right - originalLeft - mEventPadding * 2);
+            int width = (int) (rect.right - originalLeft - eventPadding * 2);
             textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, width, TextUtils.TruncateAt.END), mEventTextPaint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
         }
 
         // Draw text
         canvas.save();
-        canvas.translate(originalLeft + mEventPadding, originalTop + mEventPadding);
+        canvas.translate(originalLeft + eventPadding, originalTop + eventPadding);
         textLayout.draw(canvas);
         canvas.restore();
     }
@@ -1052,8 +1053,7 @@ public class WeekView extends View {
 	    float oldWidthPerDay = mWidthPerDay;
 	    recalculateWidthPerDay();
 	    mCurrentOrigin.x *= (mWidthPerDay + mColumnGap) / (oldWidthPerDay + mColumnGap);
-//        mCurrentOrigin.x = 0;
-//        mCurrentOrigin.y = 0;
+	    mEventTextPaint.setTextSize(mEventTextSize - numberOfVisibleDays + 1); // Kill me
         invalidate();
     }
 
