@@ -9,13 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 /**
  * Created by Eddie on 2/10/2015.
  */
 public class NavAdapter extends ArrayAdapter<String> {
 	Context context;
+	int selected;
 
 	public NavAdapter(Context context) {
 		super(context, R.layout.nav_drawer_item, context.getResources().getStringArray(R.array.page_names));
@@ -45,9 +44,14 @@ public class NavAdapter extends ArrayAdapter<String> {
 		String navItemTitle = getItem(position);
 		if (navItemTitle != null) {
 			viewHolder.title.setText(navItemTitle);
-			viewHolder.icon.setImageResource(GetIcon(navItemTitle));
+			viewHolder.icon.setImageResource(GetIcon(navItemTitle, position == selected));
 		}
 		return convertView;
+	}
+
+	public void activate(int idx) {
+		selected = idx;
+		notifyDataSetChanged();
 	}
 
 	static class ViewHolder {
@@ -55,18 +59,38 @@ public class NavAdapter extends ArrayAdapter<String> {
 		ImageView icon;
 	}
 
-	private static int GetIcon(String action) {
-		switch (action) {
-			case "Schedule":
-				return R.drawable.tabbar_schedule;
-			case "Announcements":
-				return R.drawable.tabbar_hacks; // TODO: replace?
-			case "FAQ":
-				return R.drawable.tabbar_faq;
-			case "Report":
-				return R.drawable.tabbar_report;
-			default:
-				return -1;
+	private static int GetIcon(String action, boolean active) {
+		if (active) {
+			switch (action) {
+				case "Announcements":
+					return R.drawable.tabbar_hacks_active;
+				case "FAQ":
+					return R.drawable.tabbar_faq_active;
+				case "Schedule":
+					return R.drawable.tabbar_schedule_active;
+				case "Maps":
+					return R.drawable.tabbar_map_active;
+				case "Report":
+					return R.drawable.tabbar_report_active;
+				default:
+					return -1;
+			}
+		}
+		else {
+			switch (action) {
+				case "Announcements":
+					return R.drawable.tabbar_hacks;
+				case "FAQ":
+					return R.drawable.tabbar_faq;
+				case "Schedule":
+					return R.drawable.tabbar_schedule;
+				case "Maps":
+					return R.drawable.tabbar_map;
+				case "Report":
+					return R.drawable.tabbar_report;
+				default:
+					return -1;
+			}
 		}
 	}
 }

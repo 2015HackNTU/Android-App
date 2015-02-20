@@ -1,22 +1,16 @@
 package com.treehacks.treehacks;
 
-import java.util.Locale;
-
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
@@ -24,10 +18,12 @@ public class MainActivity extends ActionBarActivity {
 	DrawerLayout drawerLayout;
 	ListView drawerList;
 	ActionBarDrawerToggle drawerToggle;
+	NavAdapter navAdapter;
 
 	ScheduleFragment scheduleFragment;
 	AnnounceFragment announceFragment;
 	FaqFragment faqFragment;
+	MapFragment mapFragment;
 	ReportFragment reportFragment;
 
     @Override
@@ -36,9 +32,10 @@ public class MainActivity extends ActionBarActivity {
 	    setContentView(R.layout.activity_main);
 
 	    // Initialize pages
-	    scheduleFragment = new ScheduleFragment();
 	    announceFragment = new AnnounceFragment();
 	    faqFragment = new FaqFragment();
+	    scheduleFragment = new ScheduleFragment();
+	    mapFragment = new MapFragment();
 	    reportFragment = new ReportFragment();
 
 	    // Show hamburger menu icon
@@ -47,7 +44,8 @@ public class MainActivity extends ActionBarActivity {
 	    // Initialize navigation list
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    drawerList = (ListView) findViewById(R.id.nav_drawer);
-	    drawerList.setAdapter(new NavAdapter(this));
+	    navAdapter = new NavAdapter(this);
+	    drawerList.setAdapter(navAdapter);
 	    drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -61,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
 					    .replace(R.id.content_frame, page).commit();
 
 			    // Highlight the selected item, update the title, and close the drawer
+			    navAdapter.activate(position);
 			    drawerList.setItemChecked(position, true);
 			    setTitle(fragTitle);
 			    drawerLayout.closeDrawer(drawerList);
@@ -74,9 +73,9 @@ public class MainActivity extends ActionBarActivity {
 	    // Show first page
 	    FragmentManager fm = getSupportFragmentManager();
 	    fm.beginTransaction()
-			    .replace(R.id.content_frame, scheduleFragment).commit();
+			    .replace(R.id.content_frame, announceFragment).commit();
 	    drawerList.setItemChecked(0, true);
-	    setTitle(getString(R.string.title_schedule));
+	    setTitle("Announcements");
     }
 
 	@Override
@@ -106,12 +105,14 @@ public class MainActivity extends ActionBarActivity {
 
 	Fragment getPage(String title) {
 		switch (title) {
-			case "Schedule":
-				return scheduleFragment;
 			case "Announcements":
 				return announceFragment;
 			case "FAQ":
 				return faqFragment;
+			case "Schedule":
+				return scheduleFragment;
+			case "Maps":
+				return mapFragment;
 			case "Report":
 				return reportFragment;
 			default:

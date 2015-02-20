@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,7 +47,7 @@ public class FaqFragment extends Fragment {
 			public void done(final List<ParseObject> parseCloudFaqs, ParseException e) {
 				if (e == null) {
 					// Skip if no new updates are found
-					// Get newest updatedAt from cloud events
+					// Get newest updatedAt from cloud faqs
 					Date newestChange;
 					if (!parseCloudFaqs.isEmpty())
 						newestChange = parseCloudFaqs.get(0).getUpdatedAt();
@@ -67,7 +66,7 @@ public class FaqFragment extends Fragment {
 						storedChangeTime = new ParseObject("FaqChangeTime");
 						try {
 							storedChangeTime.pin();
-						} catch (ParseException e2) {
+						} catch (ParseException ignored) {
 						}
 					}
 					if (!newestChange.after(storedChange)) {
@@ -118,18 +117,16 @@ public class FaqFragment extends Fragment {
 		// Get faqs from cache
 		ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("FAQ");
 		localQuery.fromLocalDatastore();
-		localQuery.orderByDescending("updatedAt");
-		List<ParseObject> faqs;
-		try {
-			faqs = localQuery.find();
-			Log.d("Parse", "read FAQs from local db SUCCESS");
-		} catch (ParseException e) {
-			e.printStackTrace();
-			faqs = new ArrayList<>();
-		}
+		localQuery.orderByAscending("question");
+		localQuery.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> parseObjects, ParseException e) {
+				Log.d("Parse", "read FAQs from local db SUCCESS");
+				faqAdapter = new FaqAdapter(parseObjects);
+				faqView.setAdapter(faqAdapter);
+			}
+		});
 
-		faqAdapter = new FaqAdapter(faqs);
-		faqView.setAdapter(faqAdapter);
 		return rootView;
 	}
 

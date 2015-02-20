@@ -1,6 +1,5 @@
 package com.treehacks.treehacks;
 
-import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,17 +8,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -30,7 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -38,11 +35,24 @@ import java.util.TimeZone;
  */
 public class ScheduleFragment extends Fragment implements WeekView.EventClickListener, WeekView.MonthChangeListener, WeekView.EventLongPressListener {
 	WeekView weekView;
+	Spinner viewSpinner;
+	ArrayAdapter<String> adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+		// Set up spinner adapter
+		adapter = new ActionBarSpinnerAdapter<String>(getActivity()) {
+			@Override
+			public String getObjectName(String object) {
+				return object;
+			}
+		};
+
+		adapter.addAll("One-day view", "Three-day view");
+
 		// Sync scheduled events from cloud
 		ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Schedule");
 		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -70,7 +80,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 						storedChangeTime = new ParseObject("EventChangeTime");
 						try {
 							storedChangeTime.pin();
-						} catch (ParseException e2) {
+						} catch (ParseException ignored) {
 						}
 					}
 					if (!newestChange.after(storedChange)) {
@@ -137,28 +147,27 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_schedule, menu);
-	    if (weekView.getNumberOfVisibleDays() == 1)
-			menu.findItem(R.id.action_day_view).setChecked(true);
-		else
-	        menu.findItem(R.id.action_three_day_view).setChecked(true);
-    }
+	    viewSpinner = (Spinner) menu.findItem(R.id.menu_schedule_spinner).getActionView();
+	    viewSpinner.setAdapter(adapter);
+	    viewSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.isChecked())
-            return true;
-        else
-            item.setChecked(true);
-        switch (item.getItemId()) {
-            case R.id.action_day_view:
-                weekView.setNumberOfVisibleDays(1);
-                return true;
-            case R.id.action_three_day_view:
-                weekView.setNumberOfVisibleDays(3);
-                return true;
-            default:
-	            return false;
-        }
+		    @Override
+		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				switch (adapter.getItem(position)) {
+					case "One-day view":
+						weekView.setNumberOfVisibleDays(1);
+						break;
+					case "Three-day view":
+						weekView.setNumberOfVisibleDays(3);
+						break;
+				}
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parent) {
+
+		    }
+	    });
     }
 
 	@Override
@@ -181,6 +190,12 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		Calendar nextMonth = new GregorianCalendar(newYear + (newMonth == Calendar.DECEMBER ? 1 : 0), (newMonth + 1) % 12, 0);
 		localQuery.whereGreaterThanOrEqualTo("eventTime", thisMonth.getTime());
 		localQuery.whereLessThan("eventTime", nextMonth.getTime());
+		localQuery.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> parseObjects, ParseException e) {
+
+			}
+		});
 		List<ParseObject> parseEvents;
 		try {
 			parseEvents = localQuery.find();

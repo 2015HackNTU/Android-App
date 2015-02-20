@@ -89,13 +89,14 @@ public class WeekView extends View {
     private int mDayBackgroundColor = Color.rgb(245, 245, 245);
     private int mHourSeparatorColor = Color.rgb(210, 210, 210);
 	private int nowLineColor = Color.rgb(39, 137, 228);
-	private int nowLineThickness = 6;
+	private int nowLineThickness = 2;
     private int mTodayBackgroundColor = Color.rgb(239, 247, 254);
     private int mHourSeparatorHeight = 2;
     private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
     private int mEventTextSize = 12;
     private int mEventTextColor = Color.BLACK;
-    private int mEventPadding = 20;
+    private int mEventPaddingDp = 10;
+	private float mEventPadding;
     private int mHeaderColumnBackgroundColor = Color.WHITE;
     private int mDefaultEventColor;
     private boolean mIsFirstDraw = true;
@@ -116,6 +117,23 @@ public class WeekView extends View {
     private EmptyViewLongPressListener mEmptyViewLongPressListener;
     private DateTimeInterpreter mDateTimeInterpreter;
 
+	// Limit scrolling to within TreeHacks
+	private boolean canScroll(float x) {
+//		Calendar treeHacksStart = Calendar.getInstance();
+//		treeHacksStart.set(2015, Calendar.FEBRUARY, 20);
+//		Calendar treeHacksEnd = Calendar.getInstance();
+//		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22);
+//		if (mFirstVisibleDay.getTimeInMillis() + mFirstVisibleDay.getTimeZone().getRawOffset() <
+//				treeHacksStart.getTimeInMillis() + treeHacksStart.getTimeZone().getRawOffset() &&
+//				x < 0)
+//			return false;
+//		if (mLastVisibleDay.getTimeInMillis() + mLastVisibleDay.getTimeZone().getRawOffset() >
+//				treeHacksEnd.getTimeInMillis() + treeHacksEnd.getTimeZone().getRawOffset() &&
+//				x > 0)
+//			return false;
+		return true;
+	}
+
     private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
@@ -129,6 +147,11 @@ public class WeekView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             if (mCurrentScrollDirection == Direction.NONE) {
                 if (Math.abs(distanceX) > Math.abs(distanceY)) {
+					if (!canScroll(distanceX)) {
+						mCurrentScrollDirection = Direction.NONE;
+						mCurrentFlingDirection = Direction.NONE;
+						return true;
+					}
                     mCurrentScrollDirection = Direction.HORIZONTAL;
                     mCurrentFlingDirection = Direction.HORIZONTAL;
                 }
@@ -251,7 +274,7 @@ public class WeekView extends View {
             mTodayHeaderTextColor = a.getColor(R.styleable.WeekView_todayHeaderTextColor, mTodayHeaderTextColor);
             mEventTextSize = a.getDimensionPixelSize(R.styleable.WeekView_eventTextSize, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, mEventTextSize, context.getResources().getDisplayMetrics()));
             mEventTextColor = a.getColor(R.styleable.WeekView_eventTextColor, mEventTextColor);
-            mEventPadding = a.getDimensionPixelSize(R.styleable.WeekView_hourSeparatorHeight, mEventPadding);
+            mEventPadding = a.getDimensionPixelSize(R.styleable.WeekView_hourSeparatorHeight, mEventPaddingDp);
             mHeaderColumnBackgroundColor = a.getColor(R.styleable.WeekView_headerColumnBackground, mHeaderColumnBackgroundColor);
             mDayNameLength = a.getInteger(R.styleable.WeekView_dayNameLength, mDayNameLength);
             mOverlappingEventGap = a.getDimensionPixelSize(R.styleable.WeekView_overlappingEventGap, mOverlappingEventGap);
@@ -315,7 +338,7 @@ public class WeekView extends View {
 	    // Prepare now line paint
 	    nowLinePaint = new Paint();
 	    nowLinePaint.setStyle(Paint.Style.STROKE);
-	    nowLinePaint.setStrokeWidth(nowLineThickness);
+	    nowLinePaint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, nowLineThickness, getResources().getDisplayMetrics()));
 	    nowLinePaint.setShadowLayer(nowLineThickness * 2, 0, 0, nowLineColor); // Appears not to do anything
 	    nowLinePaint.setColor(nowLineColor);
 
@@ -333,6 +356,8 @@ public class WeekView extends View {
         // Prepare event background color.
         mEventBackgroundPaint = new Paint();
         mEventBackgroundPaint.setColor(Color.rgb(174, 208, 238));
+
+	    mEventPadding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mEventPadding, getResources().getDisplayMetrics());
 
         // Prepare header column background color.
         mHeaderColumnBackgroundPaint = new Paint();
@@ -615,7 +640,8 @@ public class WeekView extends View {
      * @param originalLeft The original left position of the rectangle. The rectangle may have some of its portion outside of the visible area.
      */
     private void drawText(String text, RectF rect, Canvas canvas, float originalTop, float originalLeft) {
-	    int eventPadding = mEventPadding - getNumberOfVisibleDays() * 4; // Kill me
+	    float dayFactor = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getNumberOfVisibleDays() * 2, getResources().getDisplayMetrics());
+	    float eventPadding = mEventPadding - dayFactor; // Kill me
         if (rect.right - rect.left - eventPadding * 2 < 0) return;
 
         // Get text dimensions
@@ -1208,7 +1234,7 @@ public class WeekView extends View {
         invalidate();
     }
 
-    public int getEventPadding() {
+    public float getEventPadding() {
         return mEventPadding;
     }
 

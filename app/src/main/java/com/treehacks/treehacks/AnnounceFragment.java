@@ -9,11 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,7 +24,6 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -69,7 +66,7 @@ public class AnnounceFragment extends Fragment {
 		                storedChangeTime = new ParseObject("AnnounceChangeTime");
 		                try {
 			                storedChangeTime.pin();
-		                } catch (ParseException e2) {
+		                } catch (ParseException ignored) {
 		                }
 	                }
 	                if (!newestChange.after(storedChange)) {
@@ -121,17 +118,15 @@ public class AnnounceFragment extends Fragment {
         ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Push");
         localQuery.fromLocalDatastore();
 		localQuery.orderByDescending("updatedAt");
-        List<ParseObject> pushes;
-        try {
-            pushes = localQuery.find();
-            Log.d("Parse", "read announcements from local db SUCCESS");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            pushes = new ArrayList<>();
-        }
+		localQuery.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> parseObjects, ParseException e) {
+				Log.d("Parse", "read announcements from local db SUCCESS");
+				announceAdapter = new AnnounceAdapter(parseObjects);
+				announceView.setAdapter(announceAdapter);
+			}
+		});
 
-        announceAdapter = new AnnounceAdapter(pushes);
-        announceView.setAdapter(announceAdapter);
         return rootView;
 	}
 

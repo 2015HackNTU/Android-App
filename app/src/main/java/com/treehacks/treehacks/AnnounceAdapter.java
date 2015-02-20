@@ -3,20 +3,15 @@ package com.treehacks.treehacks;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.parse.Parse;
 import com.parse.ParseObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,7 +59,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 
     @Override
     public AnnounceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_announce, parent, false);
+        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_announce, parent, false);
 	    return new ViewHolder(v);
     }
 

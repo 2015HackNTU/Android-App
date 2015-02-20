@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> impl
 
 	@Override
 	public FaqAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq, parent, false);
+		CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_faq, parent, false);
 		return new ViewHolder(v);
 	}
 
