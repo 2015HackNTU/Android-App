@@ -651,9 +651,9 @@ public class WeekView extends View {
         float availableHeight = rect.bottom - rect.top - eventPadding * 2;
 	    if (textLayout.getHeight() > availableHeight) {
 		    float lineHeight = textLayout.getHeight() / textLayout.getLineCount();
-		    float totalRoom = width * (float) Math.floor(availableHeight / lineHeight);
+		    int availableLines = Math.max(1, (int) Math.floor(availableHeight / lineHeight));
+		    float totalRoom = width * availableLines;
 		    textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, totalRoom, TextUtils.TruncateAt.END), mEventTextPaint, (int) width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
-
 	    }
 
         // Draw text
