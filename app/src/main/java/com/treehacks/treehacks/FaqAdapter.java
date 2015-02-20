@@ -20,7 +20,12 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.ViewHolder> impl
 	public List<ParseObject> faqs;
 	List<ParseObject> filteredFaqs;
 
+	public FaqAdapter() {
+		this(new ArrayList<ParseObject>());
+	}
+
 	public FaqAdapter(List<ParseObject> faqs) {
+		super();
 		this.faqs = faqs;
 		filteredFaqs = faqs;
 	}

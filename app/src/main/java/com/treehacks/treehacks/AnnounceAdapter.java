@@ -22,7 +22,12 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
     public List<ParseObject> announcements;
 	List<ParseObject> filteredAnnouncements;
 
+	public AnnounceAdapter() {
+		this(new ArrayList<ParseObject>());
+	}
+
     public AnnounceAdapter(List<ParseObject> announcements) {
+	    super();
         this.announcements = announcements;
 	    filteredAnnouncements = announcements;
     }

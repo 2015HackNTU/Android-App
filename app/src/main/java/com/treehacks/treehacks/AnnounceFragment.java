@@ -33,6 +33,20 @@ public class AnnounceFragment extends Fragment {
     RecyclerView announceView;
     AnnounceAdapter announceAdapter;
 	SearchView sv;
+	ParseQuery<ParseObject> localQuery;
+	ParseQuery<ParseObject> cloudQuery;
+
+	public AnnounceFragment() {
+		announceAdapter = new AnnounceAdapter();
+
+		localQuery = ParseQuery.getQuery("Push");
+		localQuery.fromLocalDatastore();
+		localQuery.orderByDescending("updatedAt");
+
+
+		cloudQuery = ParseQuery.getQuery("Push");
+		cloudQuery.orderByDescending("updatedAt");
+	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +54,6 @@ public class AnnounceFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Sync announcements from cloud
-        ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Push");
-	    cloudQuery.orderByDescending("updatedAt");
         cloudQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseCloudAnnouncements, ParseException e) {
@@ -113,19 +125,17 @@ public class AnnounceFragment extends Fragment {
 		announceView = (RecyclerView) rootView.findViewById(R.id.announce_view);
         announceView.setHasFixedSize(true);
         announceView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		announceView.setAdapter(announceAdapter);
 
         // Get announcements from cache
-        ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Push");
-        localQuery.fromLocalDatastore();
-		localQuery.orderByDescending("updatedAt");
-		localQuery.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(List<ParseObject> parseObjects, ParseException e) {
-				Log.d("Parse", "read announcements from local db SUCCESS");
-				announceAdapter = new AnnounceAdapter(parseObjects);
-				announceView.setAdapter(announceAdapter);
-			}
-		});
+		List<ParseObject> parseObjects;
+		try {
+			parseObjects = localQuery.find();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseObjects = new ArrayList<>();
+		}
+		announceAdapter.changeDataSet(parseObjects);
 
         return rootView;
 	}

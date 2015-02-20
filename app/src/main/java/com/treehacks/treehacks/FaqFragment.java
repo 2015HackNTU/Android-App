@@ -34,14 +34,28 @@ public class FaqFragment extends Fragment {
 	FaqAdapter faqAdapter;
 	SearchView sv;
 
+	ParseQuery<ParseObject> localQuery;
+	ParseQuery<ParseObject> cloudQuery;
+
+	public FaqFragment() {
+		faqAdapter = new FaqAdapter();
+
+		localQuery = ParseQuery.getQuery("FAQ");
+		localQuery.fromLocalDatastore();
+		localQuery.orderByAscending("question");
+
+
+		cloudQuery = ParseQuery.getQuery("FAQ");
+		cloudQuery.orderByDescending("updatedAt");
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
+
 		// Sync announcements from cloud
-		ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("FAQ");
-		cloudQuery.orderByDescending("updatedAt");
 		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(final List<ParseObject> parseCloudFaqs, ParseException e) {
@@ -113,19 +127,17 @@ public class FaqFragment extends Fragment {
 		faqView = (RecyclerView) rootView.findViewById(R.id.faq_view);
 		faqView.setHasFixedSize(true);
 		faqView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		faqView.setAdapter(faqAdapter);
 
 		// Get faqs from cache
-		ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("FAQ");
-		localQuery.fromLocalDatastore();
-		localQuery.orderByAscending("question");
-		localQuery.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(List<ParseObject> parseObjects, ParseException e) {
-				Log.d("Parse", "read FAQs from local db SUCCESS");
-				faqAdapter = new FaqAdapter(parseObjects);
-				faqView.setAdapter(faqAdapter);
-			}
-		});
+		List<ParseObject> parseObjects;
+		try {
+			parseObjects = localQuery.find();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseObjects = new ArrayList<>();
+		}
+		faqAdapter.changeDataSet(parseObjects);
 
 		return rootView;
 	}

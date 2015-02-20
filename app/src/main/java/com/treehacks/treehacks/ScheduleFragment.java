@@ -190,12 +190,6 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		Calendar nextMonth = new GregorianCalendar(newYear + (newMonth == Calendar.DECEMBER ? 1 : 0), (newMonth + 1) % 12, 0);
 		localQuery.whereGreaterThanOrEqualTo("eventTime", thisMonth.getTime());
 		localQuery.whereLessThan("eventTime", nextMonth.getTime());
-		localQuery.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(List<ParseObject> parseObjects, ParseException e) {
-
-			}
-		});
 		List<ParseObject> parseEvents;
 		try {
 			parseEvents = localQuery.find();
