@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     week_view:eventTextColor="@android:color/white"
-    week_view:hourHeight="60dp"
+    week_view:hourHeight="80dp"
     week_view:headerColumnPadding="8dp"
     week_view:headerColumnTextColor="#8f000000"
     week_view:headerRowPadding="14dp"

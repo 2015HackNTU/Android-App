@@ -95,7 +95,7 @@ public class WeekView extends View {
     private int mTodayHeaderTextColor = Color.rgb(39, 137, 228);
     private int mEventTextSize = 12;
     private int mEventTextColor = Color.BLACK;
-    private int mEventPaddingDp = 10;
+    private int mEventPaddingDp = 7;
 	private float mEventPadding;
     private int mHeaderColumnBackgroundColor = Color.WHITE;
     private int mDefaultEventColor;
@@ -605,7 +605,7 @@ public class WeekView extends View {
                         left += mOverlappingEventGap;
                     float originalLeft = left;
                     float right = left + mEventRects.get(i).width * mWidthPerDay;
-                    if (right < startFromPixel + mWidthPerDay)
+                    if (right + 0.01 < startFromPixel + mWidthPerDay)
                         right -= mOverlappingEventGap;
                     if (left < mHeaderColumnWidth) left = mHeaderColumnWidth;
 
@@ -616,8 +616,7 @@ public class WeekView extends View {
                             eventRectF.left < getWidth() &&
                             eventRectF.bottom > mHeaderTextHeight + mHeaderRowPadding * 2 + mTimeTextHeight / 2 + mHeaderMarginBottom &&
                             eventRectF.top < getHeight() &&
-                            left < right
-                            ) {
+                            left < right) {
                         mEventRects.get(i).rectF = eventRectF;
                         mEventBackgroundPaint.setColor(mEventRects.get(i).event.getColor() == 0 ? mDefaultEventColor : mEventRects.get(i).event.getColor());
                         canvas.drawRect(mEventRects.get(i).rectF, mEventBackgroundPaint);
@@ -640,26 +639,22 @@ public class WeekView extends View {
      * @param originalLeft The original left position of the rectangle. The rectangle may have some of its portion outside of the visible area.
      */
     private void drawText(String text, RectF rect, Canvas canvas, float originalTop, float originalLeft) {
-	    float dayFactor = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getNumberOfVisibleDays() * 2, getResources().getDisplayMetrics());
+	    float dayFactor = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getNumberOfVisibleDays(), getResources().getDisplayMetrics());
 	    float eventPadding = mEventPadding - dayFactor; // Kill me
-        if (rect.right - rect.left - eventPadding * 2 < 0) return;
+	    float width = rect.right - rect.left - eventPadding * 2;
+        if (width < 0) return;
 
         // Get text dimensions
-        StaticLayout textLayout = new StaticLayout(text, mEventTextPaint, (int) (rect.right - originalLeft - eventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        StaticLayout textLayout = new StaticLayout(text, mEventTextPaint, (int) width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
 
         // Crop height
-        int availableHeight = (int) (rect.bottom - originalTop - eventPadding * 2);
-        int lineHeight = textLayout.getHeight() / textLayout.getLineCount();
-        if (lineHeight < availableHeight && textLayout.getHeight() > rect.height() - eventPadding * 2) {
-            int lineCount = textLayout.getLineCount();
-            int availableLineCount = (int) Math.floor(lineCount * availableHeight / textLayout.getHeight());
-            float widthAvailable = (rect.right - originalLeft - eventPadding * 2) * availableLineCount;
-            textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, widthAvailable, TextUtils.TruncateAt.END), mEventTextPaint, (int) (rect.right - originalLeft - mEventPadding * 2), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
-        }
-        else if (lineHeight >= availableHeight) {
-            int width = (int) (rect.right - originalLeft - eventPadding * 2);
-            textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, width, TextUtils.TruncateAt.END), mEventTextPaint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 1.0f, false);
-        }
+        float availableHeight = rect.bottom - rect.top - eventPadding * 2;
+	    if (textLayout.getHeight() > availableHeight) {
+		    float lineHeight = textLayout.getHeight() / textLayout.getLineCount();
+		    float totalRoom = width * (float) Math.floor(availableHeight / lineHeight);
+		    textLayout = new StaticLayout(TextUtils.ellipsize(text, mEventTextPaint, totalRoom, TextUtils.TruncateAt.END), mEventTextPaint, (int) width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
+	    }
 
         // Draw text
         canvas.save();

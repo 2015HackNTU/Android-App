@@ -131,9 +131,9 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics()));
 
         Calendar treeHacksStart = Calendar.getInstance();
-		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 16, 0);
+		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
 		Calendar treeHacksEnd = Calendar.getInstance();
-		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 9, 0);
+		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 11, 0);
 		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
 			weekView.goToDate(treeHacksStart);
 		}
