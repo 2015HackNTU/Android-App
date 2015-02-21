@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.+'
     compile project(':library')
     compile 'com.github.chrisbanes.photoview:library:1.+'
+    compile 'org.apache.commons:commons-lang3:+'
 }

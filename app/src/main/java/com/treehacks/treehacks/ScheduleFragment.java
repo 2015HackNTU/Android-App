@@ -2,7 +2,11 @@ package com.treehacks.treehacks;
 
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
@@ -23,11 +29,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -172,7 +181,9 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 
 	@Override
 	public void onEventClick(WeekViewEvent weekViewEvent, RectF rectF) {
-
+		EventDialog e = new EventDialog();
+		e.event = (ParseObject) weekViewEvent.payload;
+		showDialog(e);
 	}
 
 	@Override
@@ -203,12 +214,12 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			String title = parseEvent.getString("eventName");
 			Date startDate = parseEvent.getDate("eventTime");
 			Date endDate = parseEvent.getDate("endTime");
-			String descr = parseEvent.getString("eventDescription");
 			Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			startTime.setTime(startDate);
 			Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			endTime.setTime(endDate);
 			WeekViewEvent scheduleEvent = new WeekViewEvent(0, title, startTime, endTime);
+			scheduleEvent.payload = parseEvent;
 
 			// Set event color based on event type
 			int eventColor;
@@ -232,5 +243,66 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			events.add(scheduleEvent);
 		}
 		return events;
+	}
+
+	public static class EventDialog extends DialogFragment {
+		public ParseObject event;
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_schedule_event, container, false);
+			TextView time = (TextView) rootView.findViewById(R.id.event_time);
+			TextView location = (TextView) rootView.findViewById(R.id.event_location);
+			TextView description = (TextView) rootView.findViewById(R.id.event_description);
+
+			// Style divider
+			int titleDividerId = getResources().getIdentifier("titleDivider", "id", "android");
+			getDialog().findViewById(titleDividerId).setBackgroundColor(getResources().getColor(R.color.treehacks_red));
+
+			getDialog().setTitle(Html.fromHtml("<font color='#BF2B2B'>" + event.getString("eventName") + "</font>"));
+
+			Date startDate = event.getDate("eventTime");
+			Date endDate = event.getDate("endTime");
+			DateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+			dayFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			String dateText = dayFormat.format(startDate);
+			if (!org.apache.commons.lang3.time.DateUtils.isSameDay(startDate, endDate)) // Doesn't actually ever happen?
+				dateText += " — " + dayFormat.format(endDate);
+			DateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.US);
+			timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			String timeText = timeFormat.format(startDate) + " — " + timeFormat.format(endDate);
+			time.setText(dateText + "\n" + timeText);
+
+			location.setText(event.getString("location"));
+
+			String descriptionText = event.getString("eventDescription");
+			description.setText(descriptionText);
+
+			// Remove description field when empty
+			LinearLayout.LayoutParams lps = (LinearLayout.LayoutParams) description.getLayoutParams();
+			if (descriptionText == null || descriptionText.isEmpty())
+				lps.height = 0;
+			else
+				lps.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+			description.setLayoutParams(lps);
+
+			return rootView;
+		}
+	}
+
+	void showDialog(DialogFragment dialog) {
+
+		// DialogFragment.show() will take care of adding the fragment
+		// in a transaction.  We also want to remove any currently showing
+		// dialog, so make our own transaction and take care of that here.
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+
+		// Create and show the dialog.
+		dialog.show(ft, "dialog");
 	}
 }

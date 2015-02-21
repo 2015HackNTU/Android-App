@@ -12,6 +12,7 @@ public class WeekViewEvent {
     private Calendar mEndTime;
     private String mName;
     private int mColor;
+	public Object payload;
 
     public WeekViewEvent(){
 
