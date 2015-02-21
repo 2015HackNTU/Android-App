@@ -31,6 +31,7 @@ import java.util.List;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
+ * Fetches maps from parse and displays them in a touch-enabled photo view
  * Created by Eddie on 2/19/2015.
  */
 public class MapFragment extends Fragment {
@@ -185,6 +186,7 @@ public class MapFragment extends Fragment {
 			@Override
 			public void done(byte[] bytes, ParseException e) {
 				imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+				attacher.update();
 //				AlphaAnimation fadeOut = new AlphaAnimation(progressBar.getAlpha(), 0);
 //				fadeOut.setAnimationListener(new Animation.AnimationListener() {
 //					@Override

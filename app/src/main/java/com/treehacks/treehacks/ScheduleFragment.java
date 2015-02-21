@@ -143,12 +143,12 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
 		Calendar treeHacksEnd = Calendar.getInstance();
 		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 11, 0);
-		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis()) {
+		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis())
 			weekView.goToDate(treeHacksStart);
-		}
-		else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis()) {
+		else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis())
 			weekView.goToDate(treeHacksEnd);
-		}
+		else
+			weekView.goToDate(Calendar.getInstance());
 		return rootView;
 	}
 
