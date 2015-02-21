@@ -10,5 +10,11 @@
     <!-- An assortment of material design colors.
          Pulled from http://www.google.com/design/spec/style/color.html#color-color-palette -->
     <color name="bluegrey_400">#78909C</color>
+    <color name="purple_500">#9C27B0</color>
+
+    <color name="event_color_01">#b670c2</color>
+    <color name="event_color_02">#ef826c</color>
+    <color name="event_color_03">#6bc76d</color>
+    <color name="event_color_04">#f8b552</color>
 
 </resources>

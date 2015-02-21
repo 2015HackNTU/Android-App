@@ -230,10 +230,16 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 						eventColor = getResources().getColor(R.color.treehacks_red);
 						break;
 					case "food":
-						eventColor = getResources().getColor(R.color.treehacks_orange);
+						eventColor = getResources().getColor(R.color.event_color_02);
+						break;
+					case "talk":
+						eventColor = getResources().getColor(R.color.event_color_01);
+						break;
+					case "fun":
+						eventColor = getResources().getColor(R.color.event_color_03);
 						break;
 					default:
-						eventColor = getResources().getColor(R.color.bluegrey_400);
+						eventColor = getResources().getColor(R.color.purple_500);
 						break;
 				}
 			else
