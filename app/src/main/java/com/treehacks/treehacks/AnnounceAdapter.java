@@ -39,8 +39,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 	}
 
 	@Override
-	public Filter getFilter() {
-		return announceFilter;
+	public Filter getFilter() {return announceFilter;
 	}
 
 	// Provide a reference to the views for each data item

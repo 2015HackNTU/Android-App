@@ -72,6 +72,8 @@ public class NavAdapter extends ArrayAdapter<String> {
 					return R.drawable.tabbar_map_active;
 				case "Report":
 					return R.drawable.tabbar_report_active;
+                case "Award":
+                    return R.drawable.tabbar_award_active;
 				default:
 					return -1;
 			}
@@ -88,6 +90,8 @@ public class NavAdapter extends ArrayAdapter<String> {
 					return R.drawable.tabbar_map;
 				case "Report":
 					return R.drawable.tabbar_report;
+                case "Award":
+                    return R.drawable.tabbar_award;
 				default:
 					return -1;
 			}
