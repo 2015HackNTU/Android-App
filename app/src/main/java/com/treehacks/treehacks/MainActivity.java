@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void getAPIfragment() {
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
+        fm.beginTransaction().addToBackStack("award")
                 .replace(R.id.content_frame, apIawardfragment).commit();
 
 

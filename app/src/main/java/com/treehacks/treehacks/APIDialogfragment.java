@@ -1,7 +1,6 @@
 package com.treehacks.treehacks;
 
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,8 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 public class APIDialogfragment extends DialogFragment
@@ -29,24 +26,18 @@ public class APIDialogfragment extends DialogFragment
         return f;
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState)
-//    {
-//        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        View view = inflater.inflate(R.layout.fragment_apidialog, container);
-//        apiname=(TextView)view.findViewById(R.id.api_name);
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mNum = getArguments().getInt("num");
 //        apiname.setText(api_award[mNum]);
 
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout
+                .fragment_apidialog, null);
+
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.apple)
                 .setTitle(api_award[mNum])
-                .setView(R.layout.fragment_apidialog)
+                .setView(contentView)
 //                .setPositiveButton(R.string.alert_dialog_ok,
 //                        new DialogInterface.OnClickListener() {
 //                            public void onClick(DialogInterface dialog, int whichButton) {
@@ -61,7 +52,7 @@ public class APIDialogfragment extends DialogFragment
 //                            }
 //                        }
 //                )
-                  .setNeutralButton("close",new DialogInterface.OnClickListener() {
+                  .setNeutralButton("close", new DialogInterface.OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
                           dismiss();
