@@ -6,7 +6,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -263,8 +262,11 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 
 			// Style divider
 			int titleDividerId = getResources().getIdentifier("titleDivider", "id", "android");
-			getDialog().findViewById(titleDividerId).setBackgroundColor(getResources().getColor(R.color.treehacks_red));
-
+			View titleDivider = getDialog().findViewById(titleDividerId);
+			if (titleDivider != null) {
+				// On Android 5.0 , there is no title divider in a dialog
+				titleDivider.setBackgroundColor(getResources().getColor(R.color.treehacks_red));
+			}
 			getDialog().setTitle(Html.fromHtml("<font color='#BF2B2B'>" + event.getString("eventName") + "</font>"));
 
 			Date startDate = event.getDate("eventTime");
