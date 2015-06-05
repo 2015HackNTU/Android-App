@@ -6,7 +6,7 @@
         <item>FAQ</item>>
         <item>Schedule</item>>
         <item>Maps</item>>
-        <item>Report</item>
+        <!--<item>Report</item>-->
         <item>Award</item>>
     </string-array>
 
