@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 
 import android.app.AlertDialog;
@@ -9,6 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
+import com.treehacks.treehacks.R;
 
 public class APIDialogfragment extends DialogFragment
 {

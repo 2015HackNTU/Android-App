@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.treehacks.treehacks.R;
 
 public class MainActivity extends ActionBarActivity {
 

@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
+import com.treehacks.treehacks.R;
 
 import java.util.ArrayList;
 import java.util.List;

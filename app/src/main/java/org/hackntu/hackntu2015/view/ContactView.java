@@ -1,4 +1,4 @@
-package com.treehacks.treehacks.view;
+package org.hackntu.hackntu2015.view;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;

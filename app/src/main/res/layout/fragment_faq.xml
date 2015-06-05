@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.treehacks.treehacks.view.ContactView
+    <org.hackntu.hackntu2015.view.ContactView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="11dp"/>

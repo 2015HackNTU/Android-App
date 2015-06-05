@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -27,6 +27,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.treehacks.treehacks.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

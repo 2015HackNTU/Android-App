@@ -1,9 +1,11 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceView;
+
+import com.treehacks.treehacks.R;
 
 import java.util.Calendar;
 

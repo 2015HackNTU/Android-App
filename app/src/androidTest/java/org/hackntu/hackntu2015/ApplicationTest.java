@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

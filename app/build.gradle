@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.treehacks.treehacks"
+        applicationId "org.hackntu.hackntu2015"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 5

@@ -1,4 +1,4 @@
-package com.treehacks.treehacks;
+package org.hackntu.hackntu2015;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
+import com.treehacks.treehacks.R;
 
 /**
  * Created by eddie_000 on 2/1/2015.
