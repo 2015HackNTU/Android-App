@@ -11,8 +11,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.treehacks.treehacks.R;
-
 
 public class APIAwardfragment extends Fragment {
     RecyclerView apiawardView;

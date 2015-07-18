@@ -9,8 +9,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
-import com.treehacks.treehacks.R;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;

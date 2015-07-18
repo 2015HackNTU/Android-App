@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.treehacks.treehacks.R;
-
 
 public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHolder> {
     String[] data={"Apple","Google","Microsoft","Tutor ABC","Alibaba","Intel","ASUS"};

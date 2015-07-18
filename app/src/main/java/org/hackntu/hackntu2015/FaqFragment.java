@@ -21,8 +21,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
-import com.treehacks.treehacks.R;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

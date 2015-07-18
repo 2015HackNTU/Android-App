@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.treehacks.treehacks" >
+    package="org.hackntu.hackntu2015" >
 
     <!--Permissions for Parse Core-->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -58,7 +58,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.treehacks.treehacks" />
+                <category android:name="org.hackntu.hackntu2015" />
             </intent-filter>
         </receiver>
         <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_push_notification"/>

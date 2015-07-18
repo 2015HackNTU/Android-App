@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.treehacks.treehacks.R;
-
 public class MainActivity extends ActionBarActivity {
 
     DrawerLayout drawerLayout;

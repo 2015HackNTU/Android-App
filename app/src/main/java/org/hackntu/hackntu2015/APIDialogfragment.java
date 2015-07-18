@@ -6,11 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
-import com.treehacks.treehacks.R;
 
 public class APIDialogfragment extends DialogFragment
 {
@@ -33,7 +30,7 @@ public class APIDialogfragment extends DialogFragment
         mNum = getArguments().getInt("num");
 //        apiname.setText(api_award[mNum]);
 
-        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout
+        View contentView = getActivity().getLayoutInflater().inflate(R.layout
                 .fragment_apidialog, null);
 
         return new AlertDialog.Builder(getActivity())

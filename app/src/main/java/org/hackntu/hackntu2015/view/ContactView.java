@@ -5,7 +5,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
-import com.treehacks.treehacks.R;
+import org.hackntu.hackntu2015.R;
 
 /**
  * Created by weitang114 on 15/6/6.

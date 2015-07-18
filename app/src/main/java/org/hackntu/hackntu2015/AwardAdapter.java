@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.treehacks.treehacks.R;
-
 /**
  * Created by mac on 15/5/10.
  */

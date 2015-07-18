@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.treehacks.treehacks.R;
-
 /**
  * Created by Eddie on 2/10/2015.
  */

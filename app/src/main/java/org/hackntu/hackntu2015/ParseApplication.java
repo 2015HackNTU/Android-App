@@ -7,8 +7,6 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
-import com.treehacks.treehacks.R;
-
 /**
  * Initializes Parse for the application
  * Created by Eddie on 1/27/2015.

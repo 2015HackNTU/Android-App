@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.treehacks.treehacks.R;
+
 
 /**
  * Created by Eddie on 2/20/2015.
