@@ -21,18 +21,16 @@ import android.widget.TextView;
 
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -41,9 +39,12 @@ import java.util.TimeZone;
  * Created by Eddie on 1/20/2015.
  */
 public class ScheduleFragment extends Fragment implements WeekView.EventClickListener, WeekView.MonthChangeListener, WeekView.EventLongPressListener {
+	public static final String TAG = "SchduleFragment";
+
 	WeekView weekView;
 	Spinner viewSpinner;
 	ArrayAdapter<String> adapter;
+    ParseQuery<ParseObject> query;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,68 +58,9 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 				return object;
 			}
 		};
-
 		adapter.addAll("One-day view", "Three-day view");
 
-		// Sync scheduled events from cloud
-		ParseQuery<ParseObject> cloudQuery = ParseQuery.getQuery("Schedule");
-		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(final List<ParseObject> parseCloudEvents, ParseException e) {
-				if (e == null) {
-					// Skip if no new updates are found
-					// Get newest updatedAt from cloud events
-					Date newestChange = new Date(1);
-					for (ParseObject o : parseCloudEvents) {
-						Date change = o.getUpdatedAt();
-						if (change.after(newestChange))
-							newestChange = change;
-					}
-					// Get stored updatedAt
-					Date storedChange = new Date(0);
-					ParseQuery<ParseObject> getStoredChangeTime = ParseQuery.getQuery("EventChangeTime");
-					getStoredChangeTime.fromLocalDatastore();
-					ParseObject storedChangeTime;
-					try {
-						storedChangeTime = getStoredChangeTime.getFirst();
-						if (storedChangeTime.has("time"))
-							storedChange = storedChangeTime.getDate("time");
-					} catch (ParseException e1) {
-						storedChangeTime = new ParseObject("EventChangeTime");
-						try {
-							storedChangeTime.pin();
-						} catch (ParseException ignored) {
-						}
-					}
-					if (!newestChange.after(storedChange)) {
-						Log.d("Parse", "No newer events found in cloud");
-						return;
-					}
-					Log.d("Parse", "Newer events found in cloud, syncing...");
-					// Store newer updatedAt
-					storedChangeTime.put("time", newestChange);
-					// Update local datastore
-					ParseObject.unpinAllInBackground("events", new DeleteCallback() {
-						@Override
-						public void done(ParseException e) {
-							ParseObject.pinAllInBackground("events", parseCloudEvents, new SaveCallback() {
-								@Override
-								public void done(ParseException e) {
-									Log.d("Parse", "cache events from cloud SUCCESS");
-									if (weekView != null) {
-										weekView.notifyDatasetChanged();
-									}
-								}
-							});
-						}
-					});
-
-				} else {
-                    e.printStackTrace();
-					// We done fucked up
-				}
-			}
-		});
+        query = ParseQuery.getQuery("Schedule");
 	}
 
 	@Override
@@ -137,16 +79,32 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         weekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics()));
 
+		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+		query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "findInBg failed." + e.getLocalizedMessage());
+                    return;
+                }
+                Log.i(TAG, "findInBg done : " + list.size());
+
+                weekView.notifyDatasetChanged();
+            }
+        });
+
         Calendar treeHacksStart = Calendar.getInstance();
-		treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
-		Calendar treeHacksEnd = Calendar.getInstance();
-		treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 11, 0);
-		if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis())
-			weekView.goToDate(treeHacksStart);
-		else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis())
-			weekView.goToDate(treeHacksEnd);
-		else
-			weekView.goToDate(Calendar.getInstance());
+        treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
+        Calendar treeHacksEnd = Calendar.getInstance();
+        treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 11, 0);
+        if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis())
+            weekView.goToDate(treeHacksStart);
+        else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis())
+            weekView.goToDate(treeHacksEnd);
+        else
+            weekView.goToDate(Calendar.getInstance());
+
+
 		return rootView;
 	}
 
@@ -158,23 +116,23 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 	    viewSpinner.setAdapter(adapter);
 	    viewSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
-		    @Override
-		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				switch (adapter.getItem(position)) {
-					case "One-day view":
-						weekView.setNumberOfVisibleDays(1);
-						break;
-					case "Three-day view":
-						weekView.setNumberOfVisibleDays(3);
-						break;
-				}
-		    }
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (adapter.getItem(position)) {
+                    case "One-day view":
+                        weekView.setNumberOfVisibleDays(1);
+                        break;
+                    case "Three-day view":
+                        weekView.setNumberOfVisibleDays(3);
+                        break;
+                }
+            }
 
-		    @Override
-		    public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-		    }
-	    });
+            }
+        });
     }
 
 	@Override
@@ -191,32 +149,38 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 
 	@Override
 	public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+
 		ArrayList<WeekViewEvent> events = new ArrayList<>();
 		// Get scheduled events from cache
-		ParseQuery<ParseObject> localQuery = ParseQuery.getQuery("Schedule");
-		localQuery.fromLocalDatastore();
-		Calendar thisMonth = new GregorianCalendar(newYear, newMonth, 0);
-		Calendar nextMonth = new GregorianCalendar(newYear + (newMonth == Calendar.DECEMBER ? 1 : 0), (newMonth + 1) % 12, 0);
-		localQuery.whereGreaterThanOrEqualTo("eventTime", thisMonth.getTime());
-		localQuery.whereLessThan("eventTime", nextMonth.getTime());
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Schedule");
+		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ONLY);
 		List<ParseObject> parseEvents;
 		try {
-			parseEvents = localQuery.find();
-			Log.d("Parse", "read events from local db SUCCESS");
+			parseEvents = query.find();
+            Log.i(TAG, "find cached schedules done. Got " + parseEvents.size());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			Log.w(TAG, "find cached schedules failed:" + e.getLocalizedMessage());
 			parseEvents = new ArrayList<>();
 		}
+
 		// Create WeekViewEvents from ParseObjects
 		for (ParseObject parseEvent : parseEvents) {
 			String title = parseEvent.getString("eventName");
 			Date startDate = parseEvent.getDate("eventTime");
 			Date endDate = parseEvent.getDate("endTime");
+
 			Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			startTime.setTime(startDate);
 			Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 			endTime.setTime(endDate);
-			WeekViewEvent scheduleEvent = new WeekViewEvent(0, title, startTime, endTime);
+
+            if (startTime.get(Calendar.MONTH) != newMonth) {
+                continue;
+            }
+
+			WeekViewEvent scheduleEvent = new WeekViewEvent(parseIdToEventId(parseEvent.getObjectId()), title,
+                    startTime,
+                    endTime);
 			scheduleEvent.payload = parseEvent;
 
 			// Set event color based on event type
@@ -248,6 +212,16 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		}
 		return events;
 	}
+
+    private long parseIdToEventId(String parseId) {
+        String s = "";
+        for (char c : parseId.toCharArray()) {
+            s += String.valueOf((int) c);
+        }
+        s = s.substring(0, Math.min(s.length() - 1, 15));
+        return Long.parseLong(s);
+    }
+
 
 	public static class EventDialog extends DialogFragment {
 		public ParseObject event;

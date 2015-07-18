@@ -25,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
     AnnounceFragment announceFragment;
     FaqFragment faqFragment;
     MapFragment mapFragment;
-    ReportFragment reportFragment;
     AwardFragment awardFragment;
     APIAwardfragment apIawardfragment;
 
@@ -40,7 +39,6 @@ public class MainActivity extends ActionBarActivity {
         faqFragment = new FaqFragment();
         scheduleFragment = new ScheduleFragment();
         mapFragment = new MapFragment();
-        reportFragment = new ReportFragment();
         awardFragment = new AwardFragment();
         apIawardfragment = new APIAwardfragment();
 
@@ -141,8 +139,6 @@ public class MainActivity extends ActionBarActivity {
                 return scheduleFragment;
             case "Maps":
                 return mapFragment;
-            case "Report":
-                return reportFragment;
             case "Award":
                 return awardFragment;
             default:

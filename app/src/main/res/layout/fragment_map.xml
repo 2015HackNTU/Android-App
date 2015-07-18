@@ -6,17 +6,17 @@
     <ImageView
         android:id="@+id/map_view"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:contentDescription="@string/mapview_content_description"/>
 
     <!-- Not used because I don't have time to figure out animations -->
-    <!--<ProgressBar-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:id="@+id/map_load_progress"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--style="@android:style/Widget.Material.ProgressBar.Large"-->
-        <!--android:indeterminate="true"/>-->
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/map_load_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"/>
+    <!--style="@android:style/Widget.Material.ProgressBar.Large"-->
 </RelativeLayout>

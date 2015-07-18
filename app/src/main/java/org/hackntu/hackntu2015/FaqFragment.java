@@ -15,109 +15,27 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 /**
  * Created by eddie_000 on 1/30/2015.
  */
 public class FaqFragment extends Fragment {
+	public static final String TAG = "FaqFragment";
 	RecyclerView faqView;
 	FaqAdapter faqAdapter;
 	SearchView sv;
-
-	ParseQuery<ParseObject> localQuery;
-	ParseQuery<ParseObject> cloudQuery;
-
-	public FaqFragment() {
-		faqAdapter = new FaqAdapter();
-
-		localQuery = ParseQuery.getQuery("FAQ");
-		localQuery.fromLocalDatastore();
-		localQuery.orderByAscending("question");
-
-
-		cloudQuery = ParseQuery.getQuery("FAQ");
-		cloudQuery.orderByDescending("updatedAt");
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
-
-		// Sync announcements from cloud
-		cloudQuery.findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(final List<ParseObject> parseCloudFaqs, ParseException e) {
-				if (e == null) {
-					// Skip if no new updates are found
-					// Get newest updatedAt from cloud faqs
-					Date newestChange;
-					if (!parseCloudFaqs.isEmpty())
-						newestChange = parseCloudFaqs.get(0).getUpdatedAt();
-					else
-						newestChange = new Date(1);
-					// Get stored updatedAt
-					Date storedChange = new Date(0);
-					ParseQuery<ParseObject> getStoredChangeTime = ParseQuery.getQuery("FaqChangeTime");
-					getStoredChangeTime.fromLocalDatastore();
-					ParseObject storedChangeTime;
-					try {
-						storedChangeTime = getStoredChangeTime.getFirst();
-						if (storedChangeTime.has("time"))
-							storedChange = storedChangeTime.getDate("time");
-					} catch (ParseException e1) {
-						storedChangeTime = new ParseObject("FaqChangeTime");
-						try {
-							storedChangeTime.pin();
-						} catch (ParseException ignored) {
-						}
-					}
-					if (!newestChange.after(storedChange)) {
-						Log.d("Parse", "No newer FAQs found in cloud");
-						return;
-					}
-					Log.d("Parse", "Newer FAQs found in cloud, syncing...");
-					// Store newer updatedAt
-					storedChangeTime.put("time", newestChange);
-					// Update local datastore
-					ParseObject.unpinAllInBackground("faqs", new DeleteCallback() {
-						@Override
-						public void done(ParseException e) {
-							if (e == null) {
-								ParseObject.pinAllInBackground("faqs", parseCloudFaqs, new SaveCallback() {
-									@Override
-									public void done(ParseException e) {
-										if (e == null)
-											Log.d("Parse", "cache FAQs from cloud SUCCESS");
-										else
-											e.printStackTrace();
-									}
-								});
-							}
-							else {
-								e.printStackTrace();
-							}
-						}
-					});
-					if (faqAdapter != null) {
-						faqAdapter.changeDataSet(parseCloudFaqs);
-					}
-				} else {
-					e.printStackTrace();
-					// We done fucked up
-				}
-			}
-		});
+		faqAdapter = new FaqAdapter();
 	}
 
 	@Override
@@ -128,16 +46,20 @@ public class FaqFragment extends Fragment {
 		faqView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		faqView.setAdapter(faqAdapter);
 
-		// Get faqs from cache
-		List<ParseObject> parseObjects;
-		try {
-			parseObjects = localQuery.find();
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseObjects = new ArrayList<>();
-		}
-		faqAdapter.changeDataSet(parseObjects);
-
+		ParseQuery<ParseObject> query;
+		query = ParseQuery.getQuery("FAQ");
+		query.orderByAscending("question");
+		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> list, ParseException e) {
+				if (e != null) {
+					Log.e(TAG, e.getLocalizedMessage());
+					return;
+				}
+				faqAdapter.changeDataSet(list);
+			}
+		});
 		return rootView;
 	}
 
