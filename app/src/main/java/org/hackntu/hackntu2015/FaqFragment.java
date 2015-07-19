@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,6 +30,7 @@ public class FaqFragment extends Fragment {
 	public static final String TAG = "FaqFragment";
 	RecyclerView faqView;
 	FaqAdapter faqAdapter;
+	ProgressBar progressBar;
 	SearchView sv;
 
 	@Override
@@ -46,6 +48,9 @@ public class FaqFragment extends Fragment {
 		faqView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		faqView.setAdapter(faqAdapter);
 
+		progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+		progressBar.setVisibility(View.VISIBLE);
+
 		ParseQuery<ParseObject> query;
 		query = ParseQuery.getQuery("FAQ");
 		query.orderByAscending("question");
@@ -57,6 +62,7 @@ public class FaqFragment extends Fragment {
 					Log.e(TAG, e.getLocalizedMessage());
 					return;
 				}
+				progressBar.setVisibility(View.GONE);
 				faqAdapter.changeDataSet(list);
 			}
 		});
