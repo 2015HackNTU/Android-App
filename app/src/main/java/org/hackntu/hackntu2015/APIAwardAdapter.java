@@ -10,16 +10,16 @@ import android.widget.TextView;
 
 public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHolder> {
     String[] data={"Apple","Google","Microsoft","Tutor ABC","Alibaba","Intel","ASUS"};
-    static View.OnClickListener listener;
+    CardViewClickListener mListener;
 
-
-    static CardViewClickListener newListener;
-
+    public APIAwardAdapter(CardViewClickListener listener) {
+        mListener = listener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_award, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, mListener);
     }
 
 
@@ -44,33 +44,26 @@ public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHo
         public TextView title;
         public int index;
         public CardView cardView;
+        CardViewClickListener listener;
 
 //		public RelativeLayout parent; // for removing description TextView when it's empty
 
-        public ViewHolder (CardView cardView) {
+        public ViewHolder (CardView cardView, CardViewClickListener listener) {
             super(cardView);
             title = (TextView) cardView.findViewById(R.id.card_title_award);
             this.cardView = cardView;
             cardView.setOnClickListener(this);
-
+            this.listener = listener;
         }
         @Override
         public void onClick(View v) {
             //Log.i("test", "successapi" + index);
-
-            newListener.onClick(index);
-
-
-
+            listener.onClick(index);
         }
-
-
-
 
     }
 
     public static interface CardViewClickListener {
         public void onClick(int index);
     }
-
 }

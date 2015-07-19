@@ -14,13 +14,15 @@ import android.view.ViewGroup;
 
 public class APIAwardfragment extends Fragment {
     RecyclerView apiawardView;
-    APIAwardAdapter apiAwardAdapter =new APIAwardAdapter();
+    APIAwardAdapter apiAwardAdapter;
+    MyListenerClass myListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        }
+        myListener = new MyListenerClass();
+        apiAwardAdapter = new APIAwardAdapter(myListener);
+    }
 
 
     @Override
@@ -32,14 +34,8 @@ public class APIAwardfragment extends Fragment {
         apiawardView = (RecyclerView) rootView.findViewById(R.id.apiaward_view);
         apiawardView.setHasFixedSize(true);
         apiawardView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         apiawardView.setAdapter(apiAwardAdapter);
-
-
-
-        apiAwardAdapter.newListener = myListener;
-
-
+        apiAwardAdapter.mListener = myListener;
         return rootView;
     }
     @Override
@@ -47,33 +43,10 @@ public class APIAwardfragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-
-//    View.OnClickListener listener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            CardView cardView = (CardView) v;
-//            showAPIDialog(cardView.);
-//            Log.i("test", "success award");
-//
-//            //TODO
-//        }
-//    };
-
-
-
-    MyListenerClass myListener = new MyListenerClass();
-
-
-
-    public void showAPIDialog(int index ){
-
-
+    public void showAPIDialog(int index){
         DialogFragment apiDialogfragment = APIDialogfragment.newInstance(index);
-
         apiDialogfragment.show(getFragmentManager(), "API");
     }
-
 
     class MyListenerClass  implements APIAwardAdapter.CardViewClickListener {
         @Override
@@ -81,10 +54,6 @@ public class APIAwardfragment extends Fragment {
             showAPIDialog(index);
         }
     }
-
-
-
-
 }
 
 
