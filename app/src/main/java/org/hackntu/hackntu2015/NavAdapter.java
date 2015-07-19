@@ -45,6 +45,7 @@ public class NavAdapter extends ArrayAdapter<String> {
 		if (navItemTitle != null) {
 			viewHolder.title.setText(navItemTitle);
 			viewHolder.icon.setImageResource(GetIcon(navItemTitle, position == selected));
+            viewHolder.icon.setAlpha((position == selected ? 0.54f : 0.26f));
 		}
 		return convertView;
 	}
@@ -79,17 +80,15 @@ public class NavAdapter extends ArrayAdapter<String> {
 		else {
 			switch (action) {
 				case "Announcements":
-					return R.drawable.tabbar_hacks;
+					return R.drawable.announcement;
 				case "FAQ":
-					return R.drawable.tabbar_faq;
+					return R.drawable.faq;
 				case "Schedule":
-					return R.drawable.tabbar_schedule;
+					return R.drawable.schedule;
 				case "Maps":
-					return R.drawable.tabbar_map;
-				case "Report":
-					return R.drawable.tabbar_report;
+					return R.drawable.map;
                 case "Award":
-                    return R.drawable.tabbar_award;
+                    return R.drawable.award;
 				default:
 					return -1;
 			}
