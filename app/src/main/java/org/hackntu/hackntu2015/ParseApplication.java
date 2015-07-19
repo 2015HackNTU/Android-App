@@ -27,23 +27,21 @@ public class ParseApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// Enable Local Datastore.
-//		Parse.enableLocalDatastore(this);
 
 		Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
 		Log.d("Parse", "initialized");
 
 		// Register for 'broadcast' channel
 		ParsePush.subscribeInBackground("", new SaveCallback() {
-			@Override
-			public void done(ParseException e) {
-				if (e == null) {
-					Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
-				} else {
-					Log.e("com.parse.push", "failed to subscribe to push notifications", e);
-				}
-			}
-		});
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
+                } else {
+                    Log.e("com.parse.push", "failed to subscribe to push notifications", e);
+                }
+            }
+        });
 
 		initImageLoader(getApplicationContext());
 	}
