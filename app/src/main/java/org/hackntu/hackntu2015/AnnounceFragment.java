@@ -8,12 +8,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -26,6 +26,8 @@ import java.util.List;
  * Created by Eddie on 1/20/2015.
  */
 public class AnnounceFragment extends Fragment {
+	public static final String TAG = "AnnounceFragment";
+
     RecyclerView announceView;
     AnnounceAdapter announceAdapter;
 	SearchView sv;
@@ -59,8 +61,7 @@ public class AnnounceFragment extends Fragment {
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
 				if (e != null) {
-					Toast.makeText(getActivity(), "e=" + e.getLocalizedMessage(), Toast
-							.LENGTH_SHORT).show();
+					Log.e(TAG, "find anncouncement failed:" + e.getLocalizedMessage());
 					return;
 				}
 				announceAdapter.changeDataSet(list);
