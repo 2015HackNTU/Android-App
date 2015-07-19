@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:text="Reward"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:background="#ffffab1f"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:padding="3dp"/>
 
 
@@ -32,8 +31,8 @@
         android:layout_height="wrap_content"
         android:text="Criteria"
         android:id="@+id/textView2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:background="#ffffab1f"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="10dp"
         android:padding="3dp"/>
 
     <TextView
