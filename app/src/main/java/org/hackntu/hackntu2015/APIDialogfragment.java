@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -52,8 +51,10 @@ public class APIDialogfragment extends DialogFragment {
 
         prize.setText(award.prize);
         criteria.setText(award.criteria);
+
         dialog = new AlertDialog.Builder(getActivity())
-                .setIcon(new BitmapDrawable(getResources(), image))
+                .setIcon(-1) // for correctly showing my drawable, AOSP Issue 92929
+                .setIcon(new BitmapDrawable(getActivity().getResources(), image))
                 .setTitle(award.companyName)
                 .setView(contentView)
                 .setNeutralButton("close", new DialogInterface.OnClickListener() {
@@ -63,7 +64,7 @@ public class APIDialogfragment extends DialogFragment {
                     }
                 })
                 .create();
-        Log.i(TAG, "loading image:" + award.imageUrl);
+
         return dialog;
     }
 }
