@@ -30,7 +30,7 @@ public class CountdownView extends SurfaceView {
 
 		// Setup drawing resources
 		progressPaint = new Paint();
-		progressPaint.setColor(getResources().getColor(R.color.treehacks_red));
+		progressPaint.setColor(getResources().getColor(R.color.hackntu_red));
 		progressPaint.setStyle(Paint.Style.FILL);
 	}
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="treehacks_red">#BF2B2B</color>
+    <color name="hackntu_red">#FF8800</color>
     <color name="treehacks_orange">#EE914B</color>
     <color name="treehacks_text">#888</color>
+
     <color name="active_bg_color">#eee</color>
     <color name="pressed_bg_color">#ddd</color>
     <color name="textDark">#ddd</color>

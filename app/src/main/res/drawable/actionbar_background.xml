@@ -3,7 +3,7 @@
     android:shape="rectangle"
     android:useLevel="false" >
     <solid
-        android:color="#BF2B2B"/>
+        android:color="@color/hackntu_red"/>
     <!--<gradient-->
         <!--android:startColor="#BF2B2B"-->
         <!--android:endColor="#EE914B"-->

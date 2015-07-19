@@ -63,17 +63,15 @@ public class NavAdapter extends ArrayAdapter<String> {
 		if (active) {
 			switch (action) {
 				case "Announcements":
-					return R.drawable.tabbar_hacks_active;
+					return R.drawable.announcement;
 				case "FAQ":
-					return R.drawable.tabbar_faq_active;
+					return R.drawable.faq;
 				case "Schedule":
-					return R.drawable.tabbar_schedule_active;
+					return R.drawable.schedule;
 				case "Maps":
-					return R.drawable.tabbar_map_active;
-				case "Report":
-					return R.drawable.tabbar_report_active;
+					return R.drawable.map;
                 case "Award":
-                    return R.drawable.tabbar_award_active;
+                    return R.drawable.award;
 				default:
 					return -1;
 			}

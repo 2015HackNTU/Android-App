@@ -189,7 +189,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			if (type != null)
 				switch (type) {
 					case "admin":
-						eventColor = getResources().getColor(R.color.treehacks_red);
+						eventColor = getResources().getColor(R.color.hackntu_red);
 						break;
 					case "food":
 						eventColor = getResources().getColor(R.color.event_color_02);
@@ -238,7 +238,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 			View titleDivider = getDialog().findViewById(titleDividerId);
 			if (titleDivider != null) {
 				// On Android 5.0 , there is no title divider in a dialog
-				titleDivider.setBackgroundColor(getResources().getColor(R.color.treehacks_red));
+				titleDivider.setBackgroundColor(getResources().getColor(R.color.hackntu_red));
 			}
 			getDialog().setTitle(Html.fromHtml("<font color='#BF2B2B'>" + event.getString("eventName") + "</font>"));
 
