@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -30,8 +31,8 @@ public class APIAwardfragment extends Fragment {
     RecyclerView apiawardView;
     APIAwardAdapter apiAwardAdapter;
     MyListenerClass myListener;
-    List<ApiAward> awards;
     ImageLoader imageLoader;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class APIAwardfragment extends Fragment {
         apiawardView.setLayoutManager(new LinearLayoutManager(getActivity()));
         apiawardView.setAdapter(apiAwardAdapter);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("API_Enterprise");
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
@@ -63,6 +66,7 @@ public class APIAwardfragment extends Fragment {
                     return;
                 }
                 apiAwardAdapter.changeDataset(list);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
