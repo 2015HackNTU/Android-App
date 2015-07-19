@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -30,6 +31,7 @@ public class AnnounceFragment extends Fragment {
 
     RecyclerView announceView;
     AnnounceAdapter announceAdapter;
+    ProgressBar progressBar;
 	SearchView sv;
 
 
@@ -53,6 +55,9 @@ public class AnnounceFragment extends Fragment {
         announceView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		announceView.setAdapter(announceAdapter);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
+
 		ParseQuery<ParseObject> query;
 		query = ParseQuery.getQuery("Push");
 		query.orderByDescending("updatedAt");
@@ -64,6 +69,7 @@ public class AnnounceFragment extends Fragment {
 					Log.e(TAG, "find anncouncement failed:" + e.getLocalizedMessage());
 					return;
 				}
+                progressBar.setVisibility(View.INVISIBLE);
 				announceAdapter.changeDataSet(list);
 			}
 		});
