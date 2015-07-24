@@ -4,7 +4,6 @@ package org.hackntu.hackntu2015;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -12,8 +11,7 @@ import android.widget.TextView;
  * Created by mac on 15/5/10.
  */
 public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.ViewHolder> {
-    String[] data={"general top10","general top3","API"};
-    static View.OnClickListener listener;
+    String[] data={"General Top ","Enterprise/Government Prize","Popularity Prize"};
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_award, parent, false);
@@ -25,9 +23,6 @@ public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.ViewHolder> 
         String title=data[position];
         holder.title.setText(title);
         holder.index=position;
-        if (position == 2) {
-            holder.cardView.setOnClickListener(listener);
-        }
     }
 
     @Override
@@ -37,7 +32,7 @@ public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.ViewHolder> 
 
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView title;
         public int index;
@@ -54,14 +49,6 @@ public class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.ViewHolder> 
 //	        parent = (RelativeLayout) description.getParent();
 
         }
-        @Override
-        public void onClick(View v) {
-            //Log.i("test", "success"+index);
-
-
-        }
-
-
     }
 
 }

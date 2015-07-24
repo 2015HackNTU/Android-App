@@ -9,12 +9,15 @@ import android.os.Parcelable;
 public class ApiAward implements Parcelable {
     public String imageUrl;
     public String companyName;
+    public String companyInfo;
     public String prize;
     public String criteria;
 
-    public ApiAward(String imageUrl, String companyName, String prize, String criteria) {
+    public ApiAward(String imageUrl, String companyName, String companyInfo, String prize, String
+            criteria) {
         this.imageUrl = imageUrl;
         this.companyName = companyName;
+        this.companyInfo = companyInfo;
         this.prize = prize;
         this.criteria = criteria;
     }
@@ -28,6 +31,7 @@ public class ApiAward implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.imageUrl);
         dest.writeString(this.companyName);
+        dest.writeString(this.companyInfo);
         dest.writeString(this.prize);
         dest.writeString(this.criteria);
     }
@@ -35,11 +39,12 @@ public class ApiAward implements Parcelable {
     protected ApiAward(Parcel in) {
         this.imageUrl = in.readString();
         this.companyName = in.readString();
+        this.companyInfo = in.readString();
         this.prize = in.readString();
         this.criteria = in.readString();
     }
 
-    public static final Parcelable.Creator<ApiAward> CREATOR = new Parcelable.Creator<ApiAward>() {
+    public static final Creator<ApiAward> CREATOR = new Creator<ApiAward>() {
         public ApiAward createFromParcel(Parcel source) {
             return new ApiAward(source);
         }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:elevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="HackNTU"
+                        android:id="@+id/txt_title"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="50sp"/>
+
+                    <RelativeLayout
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageView
+                            android:id="@+id/img_logo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:scaleType="fitCenter"/>
+
+                        <ProgressBar
+                            android:id="@+id/loading"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:indeterminate="true"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txt_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:theme="@style/DetailText"
+                        android:text="Hacker spirit，是探索世界、解決問題的精神。HackNTU相信聚集並且培養擁有Hacker spirit的Hacker們，能夠創造一個更美好的世界！我們提供有Hacker Spirit的學生交流的平台，提倡動手解決問題，並致力於協助大家獲得技術上的能力。"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:elevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView"
+                        android:text="Award"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:padding="3dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_prize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$10000NT"
+                        android:phoneNumber="false"
+                        android:theme="@style/DetailText"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="3dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Criteria"
+                        android:id="@+id/textView2"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:layout_marginTop="10dp"
+                        android:padding="3dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_criteria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HACKER"
+                        android:theme="@style/DetailText"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="8dp"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

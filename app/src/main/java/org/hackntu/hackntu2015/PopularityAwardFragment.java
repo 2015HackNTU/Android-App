@@ -20,18 +20,19 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
-
-public class APIAwardfragment extends Fragment {
+/**
+ * Created by weitang114 on 15/7/24.
+ */
+public class PopularityAwardFragment extends Fragment {
     public static final String TAG = "APIAwardFragment";
-    RecyclerView apiawardView;
-    APIAwardAdapter apiAwardAdapter;
+    RecyclerView awardsView;
+    PopularityAwardAdapter adapter;
     ImageLoader imageLoader;
     ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        apiAwardAdapter = new APIAwardAdapter();
     }
 
 
@@ -41,22 +42,23 @@ public class APIAwardfragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_apiaward, container, false);
-        apiawardView = (RecyclerView) rootView.findViewById(R.id.apiaward_view);
-        apiawardView.setHasFixedSize(true);
-        apiawardView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        apiawardView.setAdapter(apiAwardAdapter);
-        apiawardView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
+        adapter = new PopularityAwardAdapter(getActivity());
+        awardsView = (RecyclerView) rootView.findViewById(R.id.apiaward_view);
+        awardsView.setHasFixedSize(true);
+        awardsView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        awardsView.setAdapter(adapter);
+        awardsView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        showAPIDialog(position);
+                        showAwardDetail(position);
                     }
                 }));
 
         progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("API_Enterprise");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("PopularPrize");
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -65,7 +67,7 @@ public class APIAwardfragment extends Fragment {
                     Log.e(TAG, "find api awards failed:" + e.getLocalizedMessage());
                     return;
                 }
-                apiAwardAdapter.changeDataset(list);
+                adapter.changeDataset(list);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -79,46 +81,13 @@ public class APIAwardfragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void showAPIDialog(int index){
-        ApiAward award = apiAwardAdapter.getItem(index);
-        SponsoredAwardDetailFragment frag =
-                SponsoredAwardDetailFragment.newInstance(award);
-
+    private void showAwardDetail(int index) {
+        Award award = adapter.getItem(index);
+        AwardDetailFragment frag = AwardDetailFragment.newInstance(award);
         getFragmentManager().beginTransaction()
                 .addToBackStack("detail")
                 .replace(R.id.content_frame, frag)
                 .commit();
-
-//        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-//        progressDialog.show();
-//
-//        final ApiAward award = apiAwardAdapter.getItem(index);
-//        imageLoader = ImageLoader.getInstance();
-//        imageLoader.loadImage(award.imageUrl, new SimpleImageLoadingListener() {
-//            @Override
-//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                super.onLoadingComplete(imageUri, view, loadedImage);
-//                DialogFragment apiDialogfragment = APIDialogfragment.newInstance(award, loadedImage);
-//                apiDialogfragment.show(getFragmentManager(), "API");
-//                progressDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//                super.onLoadingFailed(imageUri, view, failReason);
-//                progressDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onLoadingCancelled(String imageUri, View view) {
-//                super.onLoadingCancelled(imageUri, view);
-//                progressDialog.dismiss();
-//            }
-//        });
     }
 }
-
-
-
-
 

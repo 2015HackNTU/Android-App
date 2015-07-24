@@ -1,13 +1,12 @@
 package org.hackntu.hackntu2015;
 
 import android.content.res.Configuration;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
     FaqFragment faqFragment;
     MapFragment mapFragment;
     AwardFragment awardFragment;
-    APIAwardfragment apIawardfragment;
 
 
     @Override
@@ -40,7 +38,6 @@ public class MainActivity extends ActionBarActivity {
         scheduleFragment = new ScheduleFragment();
         mapFragment = new MapFragment();
         awardFragment = new AwardFragment();
-        apIawardfragment = new APIAwardfragment();
 
         // Show hamburger menu icon
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,6 +56,7 @@ public class MainActivity extends ActionBarActivity {
 
                 // Show page
                 FragmentManager fm = getSupportFragmentManager();
+                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fm.beginTransaction()
                         .replace(R.id.content_frame, page).commit();
 
@@ -80,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.content_frame, announceFragment).commit();
         drawerList.setItemChecked(0, true);
         setTitle("Announcements");
-        AwardAdapter.listener = listener;
     }
 
     @Override
@@ -107,27 +104,6 @@ public class MainActivity extends ActionBarActivity {
         return drawerToggle.onOptionsItemSelected(item) ||
                 super.onOptionsItemSelected(item);
     }
-
-    public void getAPIfragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().addToBackStack("award")
-                .replace(R.id.content_frame, apIawardfragment).commit();
-
-
-    }
-
-    ;
-
-
-    View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getAPIfragment();
-            Log.i("test", "success award");
-
-            //TODO
-        }
-    };
 
     Fragment getPage(String title) {
         switch (title) {

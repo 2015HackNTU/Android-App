@@ -17,4 +17,17 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="award_ranks">
+        <item>1 st</item>
+        <item>2 nd</item>
+        <item>3 rd</item>
+        <item>4 th</item>
+        <item>5 th</item>
+        <item>6 th</item>
+        <item>7 th</item>
+        <item>8 th</item>
+        <item>9 th</item>
+        <item>10 th</item>
+    </string-array>
+
 </resources>
