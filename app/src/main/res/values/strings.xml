@@ -43,4 +43,6 @@
     <string name="call">0955446677</string>
     <string name="findus">新體頂樓</string>
     <string name="loading">loading</string>
+    <string name="back_twice_exit">Tap back button twice to exit.</string>
+
 </resources>

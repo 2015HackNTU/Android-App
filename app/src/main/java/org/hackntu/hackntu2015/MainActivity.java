@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
+    public static final String TAG = "MainActivity";
 
     DrawerLayout drawerLayout;
     ListView drawerList;
@@ -27,6 +29,19 @@ public class MainActivity extends ActionBarActivity {
     MapFragment mapFragment;
     AwardFragment awardFragment;
 
+    private long backPressedTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()
+                || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.back_twice_exit), Toast.LENGTH_SHORT).show();
+        backPressedTime = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
