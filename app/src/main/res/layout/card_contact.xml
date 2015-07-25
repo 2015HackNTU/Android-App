@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/primary_text_default_material_light"
-                android:text="@string/call"/>
+                android:text="@string/loading"
+                android:autoLink="phone"/>
 
         </LinearLayout>
 
@@ -70,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/primary_text_default_material_light"
-                android:text="@string/email"/>
+                android:text="@string/loading"
+                android:autoLink="email"/>
 
         </LinearLayout>
 
@@ -96,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/primary_text_default_material_light"
-                android:text="@string/findus"/>
+                android:text="@string/loading"/>
 
         </LinearLayout>
 

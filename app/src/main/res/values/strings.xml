@@ -42,4 +42,5 @@
     <string name="email">help@hackntu.org</string>
     <string name="call">0955446677</string>
     <string name="findus">新體頂樓</string>
+    <string name="loading">loading</string>
 </resources>

@@ -15,8 +15,10 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -28,6 +30,9 @@ import java.util.List;
  */
 public class FaqFragment extends Fragment {
 	public static final String TAG = "FaqFragment";
+	TextView phoneText;
+	TextView emailText;
+	TextView whereText;
 	RecyclerView faqView;
 	FaqAdapter faqAdapter;
 	ProgressBar progressBar;
@@ -43,19 +48,38 @@ public class FaqFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_faq, container, false);
+		phoneText = (TextView) rootView.findViewById(R.id.txt_phone);
+		emailText = (TextView) rootView.findViewById(R.id.txt_email);
+		whereText = (TextView) rootView.findViewById(R.id.txt_where);
 		faqView = (RecyclerView) rootView.findViewById(R.id.faq_view);
+		progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+
 		faqView.setHasFixedSize(true);
 		faqView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		faqView.setAdapter(faqAdapter);
 
-		progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 		progressBar.setVisibility(View.VISIBLE);
 
-		ParseQuery<ParseObject> query;
-		query = ParseQuery.getQuery("FAQ");
-		query.orderByAscending("question");
-		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-		query.findInBackground(new FindCallback<ParseObject>() {
+		ParseQuery<ParseObject> contactQuery;
+		contactQuery = ParseQuery.getQuery("Contact");
+		contactQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+		contactQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+			@Override
+			public void done(ParseObject p, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                    return;
+                }
+				showContact(p);
+			}
+		});
+
+
+		ParseQuery<ParseObject> faqQuery;
+		faqQuery = ParseQuery.getQuery("FAQ");
+		faqQuery.orderByAscending("question");
+		faqQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+		faqQuery.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
 				if (e != null) {
@@ -76,6 +100,12 @@ public class FaqFragment extends Fragment {
 		sv.clearFocus();
 		super.onStop();
 	}
+
+	private void showContact(ParseObject p) {
+        phoneText.setText(p.getString("phone"));
+        emailText.setText(p.getString("email"));
+        whereText.setText(p.getString("where"));
+    }
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

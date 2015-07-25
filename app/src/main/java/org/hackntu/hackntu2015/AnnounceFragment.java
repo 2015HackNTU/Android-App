@@ -69,7 +69,7 @@ public class AnnounceFragment extends Fragment {
 					Log.e(TAG, "find anncouncement failed:" + e.getLocalizedMessage());
 					return;
 				}
-                progressBar.setVisibility(View.GONE);
+				progressBar.setVisibility(View.GONE);
 				announceAdapter.changeDataSet(list);
 			}
 		});
