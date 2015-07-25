@@ -3,20 +3,21 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/map_view"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:contentDescription="@string/mapview_content_description"/>
 
-    <!-- Not used because I don't have time to figure out animations -->
-    <ProgressBar
-        android:layout_centerInParent="true"
-        android:id="@+id/map_load_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"/>
-    <!--style="@android:style/Widget.Material.ProgressBar.Large"-->
+    <org.hackntu.hackntu2015.view.HackyViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagerstrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/hackntu_red"
+            android:elevation="4dp">
+        </android.support.v4.view.PagerTabStrip>
+
+    </org.hackntu.hackntu2015.view.HackyViewPager>
+
 </RelativeLayout>

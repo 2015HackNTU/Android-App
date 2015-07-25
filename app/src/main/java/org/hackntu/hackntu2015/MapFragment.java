@@ -1,27 +1,33 @@
 package org.hackntu.hackntu2015;
 
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.hackntu.hackntu2015.view.HackyViewPager;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -32,31 +38,79 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class MapFragment extends Fragment {
 	public static final String TAG = "MapFragment";
-	Spinner mapSpinner;
-	ArrayAdapter<ParseObject> adapter;
-	ImageView mapView;
 	PhotoViewAttacher attacher;
-	ProgressBar progressBar; // Useless for now, because I couldn't figure out animations in time
+	List<Map> maps = new ArrayList<>();
+	ViewPager viewPager;
+	ImageLoader imageLoader;
+    PagerAdapter pagerAdapter;
+    PagerTabStrip pagerStrip;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 
-		// Set up spinner adapter
-		adapter = new ActionBarSpinnerAdapter<ParseObject>(getActivity()) {
-			@Override
-			public String getObjectName(ParseObject object) {
-				return object.getString("name");
-			}
-		};
+		imageLoader = ImageLoader.getInstance();
+        pagerAdapter = new PagerAdapter() {
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                View view = View.inflate(getActivity(), R.layout.page_map, null);
+                final ImageView img = (ImageView) view.findViewById(R.id.map_view);
+                final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.map_load_progress);
+
+                progressBar.setVisibility(View.VISIBLE);
+                imageLoader.displayImage(maps.get(position).file.getUrl(), img, new ImageLoadingListener() {
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        // Make imageview interactive
+                        attacher = new PhotoViewAttacher(img);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {}
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {}
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {}
+                });
+
+                container.addView(view);
+                return view;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return maps.get(position).name;
+            }
+
+            @Override
+            public int getCount() {
+                return maps.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView((View) object);
+            }
+        };
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-		mapView = (ImageView) rootView.findViewById(R.id.map_view);
-		progressBar = (ProgressBar) rootView.findViewById(R.id.map_load_progress);
+		viewPager = (HackyViewPager) rootView.findViewById(R.id.pager);
+		viewPager.setAdapter(pagerAdapter);
+
+        pagerStrip = (PagerTabStrip) rootView.findViewById(R.id.pagerstrip);
+        pagerStrip.setDrawFullUnderline(false);
+        pagerStrip.setTabIndicatorColor(Color.WHITE);
+        pagerStrip.setTextColor(Color.WHITE);
 
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Maps");
 		query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
@@ -69,62 +123,38 @@ public class MapFragment extends Fragment {
 					return;
 				}
 				setMaps(parseObjects);
-
-				// Open first map
-				if (!parseObjects.isEmpty()) {
-					ParseFile mapFile = parseObjects.get(0).getParseFile("file");
-					loadParseImage(mapFile, mapView, progressBar);
-				}
 			}
 		});
 
-		// Make imageview interactive
-		attacher = new PhotoViewAttacher(mapView);
 		return rootView;
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.menu_map, menu);
-		mapSpinner = (Spinner) menu.findItem(R.id.menu_map_spinner).getActionView();
-		mapSpinner.setAdapter(adapter);
-		mapSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				ParseFile mapFile = adapter.getItem(position).getParseFile("file");
-				loadParseImage(mapFile, mapView, progressBar);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-		});
 	}
 
-	private void setMaps(List<ParseObject> maps) {
-		if (maps == null) {
+	private void setMaps(List<ParseObject> parseMaps) {
+		if (parseMaps == null) {
 			return;
 		}
-		adapter.clear();
-		adapter.addAll(maps);
-		adapter.notifyDataSetChanged();
+        maps = new ArrayList<>();
+		for (ParseObject p : parseMaps) {
+			Map map = new Map(p.getString("name"), p.getParseFile("file"));
+			maps.add(map);
+		}
+
+        pagerAdapter.notifyDataSetChanged();
 	}
 
-	private void loadParseImage(ParseFile mapFile, final ImageView imageView, final ProgressBar progressBar) {
-		imageView.setVisibility(View.INVISIBLE);
-		progressBar.setVisibility(View.VISIBLE);
 
-		mapFile.getDataInBackground(new GetDataCallback() {
-			@Override
-			public void done(byte[] bytes, ParseException e) {
-				imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-				imageView.setVisibility(View.VISIBLE);
-				attacher.update();
-				progressBar.setVisibility(View.GONE);
-			}
-		});
+	class Map {
+		public Map(String name, ParseFile file) {
+			this.name = name;
+			this.file = file;
+		}
+
+		public String name;
+		public ParseFile file;
 	}
 }
