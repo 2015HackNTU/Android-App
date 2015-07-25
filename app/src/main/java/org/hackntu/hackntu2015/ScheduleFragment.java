@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -58,7 +57,10 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 				return object;
 			}
 		};
-		adapter.addAll("One-day view", "Three-day view");
+		adapter.addAll(
+                getString(R.string.action_three_day_view),
+                getString(R.string.action_five_day_view)
+        );
 
         query = ParseQuery.getQuery("Schedule");
 	}
@@ -74,7 +76,8 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 		weekView.setMonthChangeListener(this);
 		weekView.setEventLongPressListener(this);
 
-        weekView.setNumberOfVisibleDays(1);
+        weekView.setNumberOfVisibleDays(3);
+        weekView.setHourHeight(120);
         weekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
         weekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
         weekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics()));
@@ -94,16 +97,15 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
         });
 
         Calendar treeHacksStart = Calendar.getInstance();
-        treeHacksStart.set(2015, Calendar.FEBRUARY, 20, 18, 0);
+        treeHacksStart.set(2015, Calendar.AUGUST, 21, 14, 0);
         Calendar treeHacksEnd = Calendar.getInstance();
-        treeHacksEnd.set(2015, Calendar.FEBRUARY, 22, 11, 0);
+        treeHacksEnd.set(2015, Calendar.AUGUST, 23, 20, 0);
         if (Calendar.getInstance().getTimeInMillis() < treeHacksStart.getTimeInMillis())
             weekView.goToDate(treeHacksStart);
         else if (Calendar.getInstance().getTimeInMillis() > treeHacksEnd.getTimeInMillis())
             weekView.goToDate(treeHacksEnd);
         else
             weekView.goToDate(Calendar.getInstance());
-
 
 		return rootView;
 	}
@@ -118,13 +120,14 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (adapter.getItem(position)) {
-                    case "One-day view":
-                        weekView.setNumberOfVisibleDays(1);
-                        break;
-                    case "Three-day view":
-                        weekView.setNumberOfVisibleDays(3);
-                        break;
+                String threeday = getString(R.string.action_three_day_view);
+                String fiveday = getString(R.string.action_five_day_view);
+                String chosen = adapter.getItem(position);
+                if (chosen.equals(threeday)) {
+                    weekView.setNumberOfVisibleDays(3);
+                }
+                else if (chosen.equals(fiveday)) {
+                    weekView.setNumberOfVisibleDays(5);
                 }
             }
 
@@ -240,7 +243,7 @@ public class ScheduleFragment extends Fragment implements WeekView.EventClickLis
 				// On Android 5.0 , there is no title divider in a dialog
 				titleDivider.setBackgroundColor(getResources().getColor(R.color.hackntu_red));
 			}
-			getDialog().setTitle(Html.fromHtml("<font color='#BF2B2B'>" + event.getString("eventName") + "</font>"));
+			getDialog().setTitle(event.getString("eventName"));
 
 			Date startDate = event.getDate("eventTime");
 			Date endDate = event.getDate("endTime");

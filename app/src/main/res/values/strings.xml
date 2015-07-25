@@ -9,8 +9,8 @@
     <string name="parse_app_id">J9hu199jWcl6tME6QClUaaTyLoHALbJiGV6gHWgq</string>
     <string name="parse_client_key">k6lfubl75W4nRgGdNfaqLE5dOKhflTHyw25ObxcO</string>
 
-    <string name="action_day_view">One-day view</string>
     <string name="action_three_day_view">Three-day view</string>
+    <string name="action_five_day_view">Five-day view</string>
 
     <string name="contact_header">CONTACT</string>
     <string name="edit_name_hint">Your Name (optional)</string>

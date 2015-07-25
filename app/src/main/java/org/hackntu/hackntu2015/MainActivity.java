@@ -31,17 +31,6 @@ public class MainActivity extends ActionBarActivity {
 
     private long backPressedTime = 0;
 
-    @Override
-    public void onBackPressed() {
-        if (backPressedTime + 2000 > System.currentTimeMillis()
-                || getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            super.onBackPressed();
-            return;
-        }
-
-        Toast.makeText(this, getString(R.string.back_twice_exit), Toast.LENGTH_SHORT).show();
-        backPressedTime = System.currentTimeMillis();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +109,18 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item) ||
                 super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()
+                || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.back_twice_exit), Toast.LENGTH_SHORT).show();
+        backPressedTime = System.currentTimeMillis();
     }
 
     Fragment getPage(String title) {
