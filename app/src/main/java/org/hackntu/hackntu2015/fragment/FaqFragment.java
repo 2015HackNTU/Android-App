@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -22,6 +22,9 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.adapter.FaqAdapter;
 
 import java.util.List;
 

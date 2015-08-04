@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,9 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
+
+import org.hackntu.hackntu2015.R;
+
 import java.util.ArrayList;
 import java.util.List;
 

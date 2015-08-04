@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
+import org.hackntu.hackntu2015.object.ApiAward;
+import org.hackntu.hackntu2015.R;
 
 /**
  * Created by weitang114 on 15/7/24.

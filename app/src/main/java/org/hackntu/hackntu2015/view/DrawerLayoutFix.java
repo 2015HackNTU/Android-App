@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.view;
 
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;

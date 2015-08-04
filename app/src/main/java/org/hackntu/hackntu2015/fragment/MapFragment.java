@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -25,6 +25,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.hackntu.hackntu2015.R;
 import org.hackntu.hackntu2015.view.HackyViewPager;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,15 +9,18 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
+import org.hackntu.hackntu2015.object.Award;
+import org.hackntu.hackntu2015.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PopularityAwardAdapter extends RecyclerView.Adapter<PopularityAwardAdapter.ViewHolder> {
+public class TopTenAwardAdapter extends RecyclerView.Adapter<TopTenAwardAdapter.ViewHolder> {
     List<Award> data;
     Context context;
 
-    public PopularityAwardAdapter(Context context) {
+    public TopTenAwardAdapter(Context context) {
         this.context = context;
     }
 
@@ -32,13 +35,12 @@ public class PopularityAwardAdapter extends RecyclerView.Adapter<PopularityAward
         if (list == null) return newList;
 
         for (ParseObject p : list) {
-            int rank = p.getInt("order");
             Award award = new Award(
-                    rank,
+                    p.getInt("order"),
                     p.getString("prizeDes"),
                     p.getString("criteriaDes")
             );
-            newList.add(rank - 1, award);
+            newList.add(p.getInt("order") - 1, award);
         }
         return newList;
     }

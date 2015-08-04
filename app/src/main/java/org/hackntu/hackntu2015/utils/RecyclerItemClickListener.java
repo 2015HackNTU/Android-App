@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.utils;
 
 /**
  * Created by weitang114 on 15/7/24.

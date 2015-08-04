@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +17,11 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.hackntu.hackntu2015.object.Award;
+import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.utils.RecyclerItemClickListener;
+import org.hackntu.hackntu2015.adapter.TopTenAwardAdapter;
 
 import java.util.List;
 

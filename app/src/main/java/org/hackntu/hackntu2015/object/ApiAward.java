@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.adapter;
 
 
 import android.support.v7.widget.CardView;
@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.hackntu.hackntu2015.R;
 
 /**
  * Created by mac on 15/5/10.

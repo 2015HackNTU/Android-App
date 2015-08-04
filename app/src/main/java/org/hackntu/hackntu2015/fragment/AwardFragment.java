@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+
+import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.utils.RecyclerItemClickListener;
+import org.hackntu.hackntu2015.adapter.AwardAdapter;
 
 
 /**

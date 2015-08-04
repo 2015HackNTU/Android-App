@@ -1,9 +1,11 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceView;
+
+import org.hackntu.hackntu2015.R;
 
 import java.util.Calendar;
 

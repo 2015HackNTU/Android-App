@@ -1,25 +1,25 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
 import com.parse.ParseObject;
+
+import org.hackntu.hackntu2015.object.ApiAward;
+import org.hackntu.hackntu2015.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TopTenAwardAdapter extends RecyclerView.Adapter<TopTenAwardAdapter.ViewHolder> {
-    List<Award> data;
-    Context context;
+public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHolder> {
+    List<ApiAward> data;
 
-    public TopTenAwardAdapter(Context context) {
-        this.context = context;
-    }
+    public APIAwardAdapter() {}
 
     public void changeDataset(List<ParseObject> list) {
         data = convertParseAwards(list);
@@ -27,22 +27,27 @@ public class TopTenAwardAdapter extends RecyclerView.Adapter<TopTenAwardAdapter.
     }
 
 
-    private List<Award> convertParseAwards(List<ParseObject> list) {
-        List<Award> newList = new ArrayList<>(10);
+    private List<ApiAward> convertParseAwards(List<ParseObject> list) {
+        List<ApiAward> newList = new ArrayList<>();
         if (list == null) return newList;
 
         for (ParseObject p : list) {
-            Award award = new Award(
-                    p.getInt("order"),
-                    p.getString("prizeDes"),
-                    p.getString("criteriaDes")
+            ParseFile image = p.getParseFile("image");
+            String imageUrl = image != null ? image.getUrl() : null;
+
+            ApiAward award = new ApiAward(
+                    imageUrl,
+                    p.getString("name"),
+                    p.getString("info"),
+                    p.getString("prize"),
+                    p.getString("criteria")
             );
-            newList.add(p.getInt("order") - 1, award);
+            newList.add(award);
         }
         return newList;
     }
 
-    public Award getItem(int index) {
+    public ApiAward getItem(int index) {
         if (data == null) return null;
         return data.get(index);
     }
@@ -56,10 +61,9 @@ public class TopTenAwardAdapter extends RecyclerView.Adapter<TopTenAwardAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String[] awardRanks = context.getResources().getStringArray(R.array.award_ranks);
-        String title = awardRanks[position];
+        String title= data.get(position).companyName;
         holder.title.setText(title);
-        holder.index = position;
+        holder.index=position;
     }
 
     @Override

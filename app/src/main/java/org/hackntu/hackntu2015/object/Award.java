@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,9 +8,9 @@ import android.os.Parcelable;
  */
 public class Award implements Parcelable {
 
-    int rank;
-    String prize;
-    String criteria;
+    public int rank;
+    public String prize;
+    public String criteria;
 
     public Award(int rank, String prize, String criteria) {
         this.rank = rank;

@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.hackntu.hackntu2015.R;
 
 /**
  * Created by Eddie on 2/10/2015.
@@ -55,9 +57,9 @@ public class NavAdapter extends ArrayAdapter<String> {
 		notifyDataSetChanged();
 	}
 
-	static class ViewHolder {
-		TextView title;
-		ImageView icon;
+	public static class ViewHolder {
+		public TextView title;
+		public ImageView icon;
 	}
 
 	private static int GetIcon(String action, boolean active) {

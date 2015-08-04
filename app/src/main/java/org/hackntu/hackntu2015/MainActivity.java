@@ -15,6 +15,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.hackntu.hackntu2015.adapter.NavAdapter;
+import org.hackntu.hackntu2015.fragment.AnnounceFragment;
+import org.hackntu.hackntu2015.fragment.AwardFragment;
+import org.hackntu.hackntu2015.fragment.FaqFragment;
+import org.hackntu.hackntu2015.fragment.MapFragment;
+import org.hackntu.hackntu2015.fragment.ScheduleFragment;
+
 public class MainActivity extends ActionBarActivity {
     public static final String TAG = "MainActivity";
 

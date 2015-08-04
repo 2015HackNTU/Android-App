@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
+
+import org.hackntu.hackntu2015.R;
 
 /**
  * Created by eddie_000 on 2/1/2015.

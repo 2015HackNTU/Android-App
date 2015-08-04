@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 
 import android.app.AlertDialog;
@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.TextView;
+
+import org.hackntu.hackntu2015.object.ApiAward;
+import org.hackntu.hackntu2015.R;
 
 public class APIDialogfragment extends DialogFragment {
     public static final String TAG = "APIDialogFragment";

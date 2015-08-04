@@ -1,4 +1,4 @@
-package org.hackntu.hackntu2015;
+package org.hackntu.hackntu2015.fragment;
 
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -24,6 +24,9 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.adapter.ActionBarSpinnerAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
