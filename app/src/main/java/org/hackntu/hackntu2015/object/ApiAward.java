@@ -12,14 +12,16 @@ public class ApiAward implements Parcelable {
     public String companyInfo;
     public String prize;
     public String criteria;
+    public int priority;
 
     public ApiAward(String imageUrl, String companyName, String companyInfo, String prize, String
-            criteria) {
+            criteria, int priority) {
         this.imageUrl = imageUrl;
         this.companyName = companyName;
         this.companyInfo = companyInfo;
         this.prize = prize;
         this.criteria = criteria;
+        this.priority = priority;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class ApiAward implements Parcelable {
         dest.writeString(this.companyInfo);
         dest.writeString(this.prize);
         dest.writeString(this.criteria);
+        dest.writeInt(this.priority);
     }
 
     protected ApiAward(Parcel in) {
@@ -42,6 +45,7 @@ public class ApiAward implements Parcelable {
         this.companyInfo = in.readString();
         this.prize = in.readString();
         this.criteria = in.readString();
+        this.priority = in.readInt();
     }
 
     public static final Creator<ApiAward> CREATOR = new Creator<ApiAward>() {

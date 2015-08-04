@@ -9,10 +9,12 @@ import android.widget.TextView;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
-import org.hackntu.hackntu2015.object.ApiAward;
 import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.object.ApiAward;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -40,16 +42,32 @@ public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHo
                     p.getString("name"),
                     p.getString("info"),
                     p.getString("prize"),
-                    p.getString("criteria")
+                    p.getString("criteria"),
+                    p.getInt("priority")
             );
             newList.add(award);
         }
+
+        sortAwardsByPriority(newList);
+
         return newList;
     }
 
     public ApiAward getItem(int index) {
         if (data == null) return null;
         return data.get(index);
+    }
+
+
+    private void sortAwardsByPriority(List<ApiAward> list) {
+        Comparator<ApiAward> comp = new Comparator<ApiAward>() {
+            @Override
+            public int compare(ApiAward lhs, ApiAward rhs) {
+                return lhs.priority < rhs.priority ? -1 :
+                        (lhs.priority == rhs.priority ? 0 : 1);
+            }
+        };
+        Collections.sort(list, comp);
     }
 
 
