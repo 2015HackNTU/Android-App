@@ -14,7 +14,6 @@ import org.hackntu.hackntu2015.object.ApiAward;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -60,14 +59,7 @@ public class APIAwardAdapter extends RecyclerView.Adapter<APIAwardAdapter.ViewHo
 
 
     private void sortAwardsByPriority(List<ApiAward> list) {
-        Comparator<ApiAward> comp = new Comparator<ApiAward>() {
-            @Override
-            public int compare(ApiAward lhs, ApiAward rhs) {
-                return lhs.priority < rhs.priority ? -1 :
-                        (lhs.priority == rhs.priority ? 0 : 1);
-            }
-        };
-        Collections.sort(list, comp);
+        Collections.sort(list, new ApiAward.Comparator());
     }
 
 

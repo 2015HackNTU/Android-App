@@ -13,6 +13,7 @@ import org.hackntu.hackntu2015.object.Award;
 import org.hackntu.hackntu2015.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,8 +41,10 @@ public class TopTenAwardAdapter extends RecyclerView.Adapter<TopTenAwardAdapter.
                     p.getString("prizeDes"),
                     p.getString("criteriaDes")
             );
-            newList.add(p.getInt("order") - 1, award);
+            newList.add(award);
         }
+        Collections.sort(newList, new Award.Comparator());
+
         return newList;
     }
 

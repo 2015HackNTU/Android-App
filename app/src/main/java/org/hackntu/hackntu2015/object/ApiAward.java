@@ -48,6 +48,15 @@ public class ApiAward implements Parcelable {
         this.priority = in.readInt();
     }
 
+
+    public static class Comparator implements java.util.Comparator<ApiAward> {
+        @Override
+        public int compare(ApiAward lhs, ApiAward rhs) {
+            return lhs.priority < rhs.priority ? -1
+                    : (lhs.priority == rhs.priority ? 0 : 1);
+        }
+    }
+
     public static final Creator<ApiAward> CREATOR = new Creator<ApiAward>() {
         public ApiAward createFromParcel(Parcel source) {
             return new ApiAward(source);

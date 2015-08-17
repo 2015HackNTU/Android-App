@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import com.parse.ParseObject;
 
-import org.hackntu.hackntu2015.object.Award;
 import org.hackntu.hackntu2015.R;
+import org.hackntu.hackntu2015.object.Award;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -41,8 +42,9 @@ public class PopularityAwardAdapter extends RecyclerView.Adapter<PopularityAward
                     p.getString("prizeDes"),
                     p.getString("criteriaDes")
             );
-            newList.add(rank - 1, award);
+            newList.add(award);
         }
+        Collections.sort(newList, new Award.Comparator());
         return newList;
     }
 

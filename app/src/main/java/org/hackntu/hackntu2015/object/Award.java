@@ -37,6 +37,14 @@ public class Award implements Parcelable {
         this.criteria = in.readString();
     }
 
+    public static class Comparator implements java.util.Comparator<Award> {
+        @Override
+        public int compare(Award lhs, Award rhs) {
+            return lhs.rank < rhs.rank ? -1
+                    : (lhs.rank == rhs.rank ? 0 : 1);
+        }
+    }
+
     public static final Creator<Award> CREATOR = new Creator<Award>() {
         public Award createFromParcel(Parcel source) {
             return new Award(source);
